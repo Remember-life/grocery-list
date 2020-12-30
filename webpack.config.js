@@ -8,6 +8,7 @@ module.exports = {
     path: dist_dir,
     filename: 'bundle.js'
   },
+  mode: 'development',
   module: {
     rules: [{
       test: /\.jsx?$/,
