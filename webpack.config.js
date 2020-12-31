@@ -9,6 +9,7 @@ module.exports = {
     filename: 'bundle.js'
   },
   mode: 'development',
+  watch: true,
   module: {
     rules: [{
       test: /\.jsx?$/,
