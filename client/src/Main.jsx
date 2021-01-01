@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Results from './Results.jsx';
 import axios from 'axios';
 
 function Main () {
@@ -13,6 +14,7 @@ function Main () {
   const handleSubmit = e => {
     e.preventDefault();
     console.log('inputFields', inputFields);
+
   }
 
   const handleInputChange = (index, event) => {
@@ -90,7 +92,10 @@ function Main () {
         <div>
           <button type="button" onClick={() => handleAddFields()}>+</button>
           <button type="button" onClick={handleClear}>Clear</button>
-          <button type="submit" onSubmit={handleSubmit}>Submit</button>
+          <button type="submit" onSubmit={handleSubmit}>
+            <Link to="/results">Submit</Link>
+          </button>
+
         </div>
       </form>
     </>
@@ -104,7 +109,7 @@ const container = {
 }
 
 const input = {
-  width: "50%",
+  width: "70%",
 }
 
 
