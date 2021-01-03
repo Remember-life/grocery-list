@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Results from './Results.jsx';
+import Setting from './Setting.jsx';
 import axios from 'axios';
 
 function Main () {
@@ -10,7 +11,13 @@ function Main () {
     { item: '', quantity: '' },
     { item: '', quantity: '' }
   ]);
+  const [age, setAge] = useState('');
+  const [activity, setActivity] = useState('');
 
+
+  //once submitted, two get requests
+  // in success cb, change state to the response data
+  // pass down the state to results
   const handleSubmit = e => {
     e.preventDefault();
     console.log('inputFields', inputFields);
@@ -51,6 +58,15 @@ function Main () {
     ])
   }
 
+  // from submit in setting
+  const handleSettingSubmit = (age, activity) => {
+    // change state
+    // console.log('main BEFORE', age, activity)
+    setAge(age);
+    setActivity(activity);
+    // console.log('main AFTER', age, activity);
+  }
+
   const canRemove = inputFields.length > 1;
 
   return (
@@ -88,28 +104,38 @@ function Main () {
               </div>
             </React.Fragment>
           ))}
-        </div>
-        <div>
-          <button type="button" onClick={() => handleAddFields()}>+</button>
-          <button type="button" onClick={handleClear}>Clear</button>
-          <button type="submit" onSubmit={handleSubmit}>
-            <Link to="/results">Submit</Link>
-          </button>
-
+        <button type="button" onClick={() => handleAddFields()}>+</button>
+        <button type="button">
+          <Link to="/setting">Setting</Link>
+        </button>
+        <button type="button" onClick={handleClear}>Clear</button>
+        <button type="button" onClick={handleSubmit}>
+          <Link to="/results">Submit</Link>
+        </button>
         </div>
       </form>
+      <div className="setting-container">
+        <Route path="/setting"><Setting settingToMain={handleSettingSubmit}/></Route>
+      </div>
+      <div className="results-container" style={resultsContainer}>
+        <Route path="/results"><Results /></Route>
+      </div>
     </>
   )
 
 }
 
 const container = {
-  display: 'flex',
-  flexFlow: "column wrap",
+  display: "inline-block",
 }
 
-const input = {
-  width: "70%",
+// const formContainer = {
+//   display: 'flex',
+//   flexFlow: "column wrap",
+// }
+
+const resultsContainer = {
+  display: "inline-block",
 }
 
 

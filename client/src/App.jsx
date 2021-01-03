@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Main from './Main.jsx';
 import Results from './Results.jsx';
+import Setting from './Setting.jsx';
 
 function App () {
 
@@ -9,10 +10,11 @@ function App () {
     <div className="main" style={main}>
       <h1 style={header}>Grocery List</h1>
       <div className="carrot" style={carrot}>🥕</div>
-      <Switch>
+        <Main />
+      {/* <Switch>
         <Route exact path="/"><Main /></Route>
         <Route path="/results"><Results /></Route>
-      </Switch>
+      </Switch> */}
     </div>
   )
 
