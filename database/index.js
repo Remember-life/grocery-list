@@ -18,9 +18,59 @@ const itemSchema = new mongoose.Schema({
   calorie: Number
 });
 
+const femaleSchema = new mongoose.Schema({
+  age: Number,
+  activity: String,
+  calorie: Number,
+  lower_carb: Number,
+  upper_carb: Number,
+  lower_protein: Number,
+  upper_protein: Number,
+  lower_fat: Number,
+  upper_fat: Number,
+  sodium: Number,
+  potassium: Number,
+  fiber: Number,
+  vitamin_a: Number,
+  vitamin_c: Number,
+  calcium: Number,
+  iron: Number,
+  vitamin_d: Number,
+  vitamin_b6: Number,
+  vitamin_b12: Number,
+  magnesium: Number
+})
+
+const maleSchema = new mongoose.Schema({
+  age: Number,
+  activity: String,
+  calorie: Number,
+  lower_carb: Number,
+  upper_carb: Number,
+  lower_protein: Number,
+  upper_protein: Number,
+  lower_fat: Number,
+  upper_fat: Number,
+  sodium: Number,
+  potassium: Number,
+  fiber: Number,
+  vitamin_a: Number,
+  vitamin_c: Number,
+  calcium: Number,
+  iron: Number,
+  vitamin_d: Number,
+  vitamin_b6: Number,
+  vitamin_b12: Number,
+  magnesium: Number
+})
+
 const Item = mongoose.model('Item', itemSchema);
+const Female = mongoose.model('Female', femaleSchema);
+const Male = mongoose.model('Male', maleSchema);
 
 module.exports = {
   db,
-  Item
+  Item,
+  Female,
+  Male
 }
