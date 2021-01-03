@@ -5,26 +5,29 @@ import axios from 'axios';
 function Setting ({settingToMain}) {
 
   const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
   const [activity, setActivity] = useState('');
 
   const handleBackToList = e => {
     e.preventDefault();
   }
 
-  const handleAgeChange = (event) => {
-    // const value = event.target.value;
-    setAge(event.target.value);
+  const handleAgeChange = e => {
+    setAge(e.target.value);
   }
 
-  const handleActivityChange = (event) => {
-    // const value = event.target.value;
-    setActivity(event.target.value);
+  const handleGenderChange = e => {
+    setGender(e.target.value);
+  }
+
+  const handleActivityChange = e => {
+    setActivity(e.target.value);
   }
 
   const handleSettingSubmit = e => {
     e.preventDefault();
-    // console.log('SETTING submit', age, activity);
-    settingToMain(age, activity);
+    // console.log('SETTING submit', age, gender, activity);
+    settingToMain(age, gender, activity);
   }
 
   return (
@@ -32,8 +35,12 @@ function Setting ({settingToMain}) {
       SETTING:
       <form onSubmit={handleSettingSubmit}>
         <label>
-          Your age in years:
+          Age in years:
           <input type="text" value={age} onChange={event => handleAgeChange(event)} />
+        </label>
+        <label>
+          Gender:
+          <input type="text" value={gender} onChange={event => handleGenderChange(event)} />
         </label>
         <label>
           Physical Activity level:

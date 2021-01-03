@@ -12,6 +12,7 @@ function Main () {
     { item: '', quantity: '' }
   ]);
   const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
   const [activity, setActivity] = useState('');
 
 
@@ -22,6 +23,13 @@ function Main () {
     e.preventDefault();
     console.log('inputFields', inputFields);
 
+    // get request with setting info to local database
+      // state to store the response data
+        // pass down the state to results page
+
+    // get request with inputfields values into external database
+      // state to store the response data
+        // pass down the state  to results page
   }
 
   const handleInputChange = (index, event) => {
@@ -59,12 +67,13 @@ function Main () {
   }
 
   // from submit in setting
-  const handleSettingSubmit = (age, activity) => {
+  const handleSettingSubmit = (age, gender, activity) => {
     // change state
-    // console.log('main BEFORE', age, activity)
+    // console.log('main BEFORE', age, gender, activity)
     setAge(age);
+    setGender(gender);
     setActivity(activity);
-    // console.log('main AFTER', age, activity);
+    // console.log('main AFTER', age, gender, activity);
   }
 
   const canRemove = inputFields.length > 1;
