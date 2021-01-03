@@ -11,10 +11,14 @@ function Main () {
     { item: '', quantity: '' },
     { item: '', quantity: '' }
   ]);
+
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
   const [activity, setActivity] = useState('');
 
+  const [user, setUser] = useState([
+    { data: 'not available' },
+  ]);
 
   //once submitted, two get requests
   // in success cb, change state to the response data
@@ -26,6 +30,21 @@ function Main () {
     // get request with setting info to local database
       // state to store the response data
         // pass down the state to results page
+    axios.get('/user', {
+      params: {
+        age: age,
+        gender: gender,
+        activity: activity
+      }
+    })
+    .then(function(response) {
+      console.log('main RESPONSE', response.data);
+      setUser(response.data);
+    })
+    .catch(function(error) {
+      console.log('main ERROR', error);
+    })
+
 
     // get request with inputfields values into external database
       // state to store the response data
@@ -127,7 +146,7 @@ function Main () {
         <Route path="/setting"><Setting settingToMain={handleSettingSubmit}/></Route>
       </div>
       <div className="results-container" style={resultsContainer}>
-        <Route path="/results"><Results /></Route>
+        <Route path="/results"><Results user={user}/></Route>
       </div>
     </>
   )
