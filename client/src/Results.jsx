@@ -59,10 +59,13 @@ function Results ({ user, cart }) {
   // }
 
   return (
-    <div>
-      Here is your data:
+    <div className="result-container">
+      <b>Here is your data:</b>
       {console.log('userProfile', user)}
       {console.log('cart', cart)}
+      <button type="button" onClick={handleBackToList} style={close}>
+        <Link to="/">x</Link>
+      </button>
       <div>
         Daily calorie limit: {user.calorie}
       </div>
@@ -70,8 +73,9 @@ function Results ({ user, cart }) {
         Calorie calculated from list: {cart.calorie}
       </div>
       <div>
-        {decreaseCalorie ? 'Consider getting rid of items high in sugar or fat!' : increaseCalorie ? 'Consider adding more items to your list!' : 'Your daily calorie is within the range!'}
+        <em>{decreaseCalorie ? 'Consider getting rid of items high in sugar or fat!' : increaseCalorie ? 'Consider adding more items to your list!' : 'Your daily calorie is within the range!'}</em>
       </div>
+      <hr />
       <div>
         You need more of:
         <ul>{needMore.length === 0 ? 'None!' : listMore}</ul>
@@ -80,13 +84,15 @@ function Results ({ user, cart }) {
         You need less of:
         <ul>{needLess.length === 0 ? 'None!' : listLess}</ul>
       </div>
-
-
-      <button type="button" onClick={handleBackToList}>
-        <Link to="/">Close</Link>
-      </button>
     </div>
   )
+}
+
+const close = {
+  border: 'none',
+  padding: '3px',
+  backgroundColor: 'red',
+  float: 'right',
 }
 
 

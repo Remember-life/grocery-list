@@ -9,7 +9,7 @@ function App () {
   return (
     <div className="main" style={main}>
       <h1 style={header}>Grocery List</h1>
-      <div className="carrot" style={carrot}>🥕</div>
+      <div className="carrot" style={carrot}>🥕🥬🍓</div>
         <Main />
       {/* <Switch>
         <Route exact path="/"><Main /></Route>
@@ -21,14 +21,18 @@ function App () {
 }
 
 const main = {
-  width: "100vw",
-  height: "100vh",
-  background: "green",
+  // width: "100vw",
+  // height: "100vh",
+  background: "rgba(234, 170, 91, 1)",
+  fontFamily: "Comic Sans MS",
 }
 
 const header = {
   flex: "95%",
   display: "inline-block",
+  paddingLeft: "260px",
+  // color: "white",
+  // fontFamily: "Comic Sans MS",
 }
 
 const carrot = {

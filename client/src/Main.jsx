@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Results from './Results.jsx';
 import Setting from './Setting.jsx';
+import '../../style.css';
 import axios from 'axios';
 
 function Main () {
@@ -110,73 +111,119 @@ function Main () {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <div className="container" style={container}>
+      <form onSubmit={handleSubmit} style={form}>
           {inputFields.map((inputField, index) => (
             <React.Fragment key={`${inputField}~${index}`}>
-              <div>
-                <label>Item: </label>
-                <input
-                  type="text"
-                  id="itemName"
-                  name="itemName"
-                  value={inputField.item}
-                  onChange={event => handleInputChange(index, event)}
-                />
-              </div>
-              <div>
-                <label>How many? </label>
-                <input
-                  type="text"
-                  id="quantity"
-                  name="quantity"
-                  value={inputField.quantity}
-                  onChange={event => handleInputChange(index, event)}
-                />
-              </div>
-              <div>
-                {canRemove
-                  ? <button type="button" onClick={() => handleRemoveFields(index)}>
-                    - </button>
-                  : null
-                }
+              <div className="input-fields" style={fragment}>
+                <div className="item-name">
+                  <label>Item:</label>
+                  <input
+                    type="text"
+                    id="itemName"
+                    name="itemName"
+                    value={inputField.item}
+                    size="7"
+                    onChange={event => handleInputChange(index, event)}
+                  />
+                </div>
+                <div className="item-amount" style={amount}>
+                  <label>How many?</label>
+                  <input
+                    type="text"
+                    id="quantity"
+                    name="quantity"
+                    value={inputField.quantity}
+                    size="2"
+                    onChange={event => handleInputChange(index, event)}
+                  />
+                </div>
+                <div className="delete-item" style={remove}>
+                  {canRemove
+                    ? <button type="button" onClick={() => handleRemoveFields(index)} style={removeButton}>
+                      delete </button>
+                    : null
+                  }
+                </div>
               </div>
             </React.Fragment>
           ))}
-        <button type="button" onClick={() => handleAddFields()}>+</button>
-        <button type="button">
-          <Link to="/setting">Setting</Link>
-        </button>
-        <button type="button" onClick={handleClear}>Clear</button>
-        <button type="button" onClick={handleSubmit}>
-          <Link to="/results">Submit</Link>
-        </button>
+        <button type="button" onClick={() => handleAddFields()} style={addMore}>Add more!</button>
+        <div className="buttons" style={buttonsContainer}>
+          <button type="button" style={button}>
+            <Link to="/setting">Setting</Link>
+          </button>
+          <button type="button" onClick={handleClear} style={button}>Clear</button>
+          <button type="button" onClick={handleSubmit} style={button}>
+            <Link to="/results">Submit</Link>
+          </button>
         </div>
       </form>
-      <div className="setting-container">
-        <Route path="/setting"><Setting settingToMain={handleSettingSubmit}/></Route>
-      </div>
       <div className="results-container" style={resultsContainer}>
         <Route path="/results"><Results user={user} cart={inputTotal}/></Route>
+      </div>
+      <div className="setting-container">
+        <Route path="/setting"><Setting settingToMain={handleSettingSubmit}/></Route>
       </div>
     </>
   )
 
 }
 
-const container = {
-  display: "inline-block",
+const form = {
+  fontFamily: 'Comic Sans MS',
+  display: 'inline-block',
+  marginLeft: "50px",
+  paddingTop: "70px",
 }
-
-// const formContainer = {
-//   display: 'flex',
-//   flexFlow: "column wrap",
-// }
 
 const resultsContainer = {
-  display: "inline-block",
+  // display: 'inline-block',
+  width: '50%',
+  marginLeft: "260px",
+  marginTop: '30px',
+  paddingBottom: '30px',
 }
 
+const fragment = {
+  display: 'flex',
+  flexDirection: 'row',
+  marginBottom: '10px',
+}
+
+const amount = {
+  marginLeft: '10px',
+}
+
+const remove = {
+  marginLeft: '10px',
+}
+
+const removeButton = {
+  border: 'none',
+  padding: '4px',
+}
+
+const addMore = {
+  width: '80%',
+  border: 'none',
+  padding: '3px',
+  borderRadius: '8px',
+  cursor: 'pointer',
+}
+
+const buttonsContainer = {
+  width: '80%',
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-evenly',
+  marginTop: '10px',
+}
+
+const button = {
+  border: 'none',
+  padding: '4px',
+  cursor: 'pointer',
+}
 
 export default Main;
 
