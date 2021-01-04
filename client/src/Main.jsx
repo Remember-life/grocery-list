@@ -15,10 +15,10 @@ function Main () {
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
   const [activity, setActivity] = useState('');
+  const [days, setDays] = useState('');
 
-  const [user, setUser] = useState([
-    { data: 'not available' },
-  ]);
+  const [user, setUser] = useState('');
+  const [inputTotal, setInputTotal] = useState('');
 
   //once submitted, two get requests
   // in success cb, change state to the response data
@@ -30,21 +30,31 @@ function Main () {
     // get request with setting info to local database
       // state to store the response data
         // pass down the state to results page
-    axios.get('/user', {
-      params: {
-        age: age,
-        gender: gender,
-        activity: activity
-      }
-    })
-    .then(function(response) {
-      console.log('main RESPONSE', response.data);
-      setUser(response.data);
-    })
+    axios.all([
+      axios.get('/user', {
+        params: {
+          age: age,
+          gender: gender,
+          activity: activity,
+        }
+      }),
+      axios.get('/items', {
+        params: {
+          input: inputFields,
+          days: days,
+        }
+      })
+    ])
+    .then(axios.spread((user, cart) => {
+      // console.log('main RESPONSE', user.data);
+      setUser(user.data);
+
+      // console.log('main Cart response:', cart.data);
+      setInputTotal(cart.data);
+    }))
     .catch(function(error) {
       console.log('main ERROR', error);
     })
-
 
     // get request with inputfields values into external database
       // state to store the response data
@@ -75,9 +85,9 @@ function Main () {
   }
 
   const handleClear = (e) => {
-    Array.from(document.querySelectorAll('input')).forEach(
-      input => (input.value = '')
-    );
+    // Array.from(document.querySelectorAll('input')).forEach(
+    //   input => (input.value = '')
+    // );
     setInputFields([
       { item: '', quantity: '' },
       { item: '', quantity: '' },
@@ -86,12 +96,13 @@ function Main () {
   }
 
   // from submit in setting
-  const handleSettingSubmit = (age, gender, activity) => {
+  const handleSettingSubmit = (age, gender, activity, days) => {
     // change state
     // console.log('main BEFORE', age, gender, activity)
     setAge(age);
     setGender(gender);
     setActivity(activity);
+    setDays(days);
     // console.log('main AFTER', age, gender, activity);
   }
 
@@ -146,7 +157,7 @@ function Main () {
         <Route path="/setting"><Setting settingToMain={handleSettingSubmit}/></Route>
       </div>
       <div className="results-container" style={resultsContainer}>
-        <Route path="/results"><Results user={user}/></Route>
+        <Route path="/results"><Results user={user} cart={inputTotal}/></Route>
       </div>
     </>
   )
