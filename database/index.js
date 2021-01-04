@@ -14,8 +14,25 @@ db.once('open', function() {
 
 const itemSchema = new mongoose.Schema({
   name: String,
-  category: String,
-  calorie: Number
+  category: {
+    type: String,
+    enum: ['fruit', 'veggie', 'grain', 'protein', 'dairy'],
+  },
+  calorie: Number,
+  carb: Number,
+  protein: Number,
+  fat: Number,
+  sodium: Number,
+  potassium: Number,
+  fiber: Number,
+  vitamin_a: Number,
+  vitamin_c: Number,
+  calcium: Number,
+  iron: Number,
+  vitamin_d: Number,
+  vitamin_b6: Number,
+  vitamin_b12: Number,
+  magnesium: Number
 });
 
 const femaleSchema = new mongoose.Schema({
