@@ -11,6 +11,7 @@ function Setting ({settingToMain}) {
   const [activity, setActivity] = useState('');
   const [days, setDays] = useState('');
   const [backdrop, setBackdrop] = useState(true);
+  const [save, setSave] = useState('save');
 
   const handleBackToList = e => {
     e.preventDefault();
@@ -37,6 +38,7 @@ function Setting ({settingToMain}) {
     e.preventDefault();
     // console.log('SETTING submit', age, gender, activity);
     settingToMain(age, gender, activity, days);
+    setSave('saved!');
   }
 
   return (
@@ -47,13 +49,13 @@ function Setting ({settingToMain}) {
       <div className="Modal">
         <b>SETTING:</b>
         <button type="button" onClick={handleBackToList} style={close}>
-          <Link to="/">x</Link>
+          <Link to="/" style={x}>x</Link>
         </button>
         <hr />
         <form onSubmit={handleSettingSubmit} style={form}>
           <label>
             Age in years:
-            <input type="text" value={age} size="3" onChange={event => handleAgeChange(event)} />
+            <input type="text" value={age} size="3" onChange={event => handleAgeChange(event)} style={inputField}/>
           </label>
           <label>
             Gender:
@@ -74,9 +76,9 @@ function Setting ({settingToMain}) {
           </label>
           <label>
             For how many days?
-            <input type="text" value={days} size="3" onChange={event => handleDaysChange(event)} />
+            <input type="text" value={days} size="3" onChange={event => handleDaysChange(event)} style={inputField}/>
           </label>
-          <input type="submit" value="save" style={save}/>
+          <input type="submit" value={save} style={saveButton}/>
         </form>
       </div>
     </>
@@ -88,20 +90,31 @@ const form = {
   flexFlow: "column wrap",
 }
 
-const save = {
-  width: '10%',
+const saveButton = {
+  width: '15%',
   border: 'none',
   padding: '3px',
   cursor: 'pointer',
   backgroundColor: 'rgba(59, 208, 32, 1)',
-
+  marginTop: '10px',
+  color: 'white',
 }
 
 const close = {
+  width: '4%',
   border: 'none',
   padding: '3px',
   backgroundColor: 'red',
   float: 'right',
+  color: 'white',
+}
+
+const x = {
+  color: 'white',
+}
+
+const inputField = {
+  border: '1px solid black',
 }
 
 export default Setting;

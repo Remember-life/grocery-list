@@ -2,12 +2,12 @@
   position: fixed;
   z-index: 500;
   background-color: white;
-  width: 50%;
+  width: 30%;
   border: 1px solid #ccc;
   box-shadow: 10px 10px 10px rgba(54, 53, 53, 0.322);
   border-radius: 5px;
   padding: 16px;
-  left: 15%;
+  left: 30%;
   top: 30%;
   box-sizing: border-box;
   transition: all 1.3s ease-out;
@@ -26,4 +26,66 @@
 a:link {
   text-decoration: none;
   color: black;
+}
+
+input[type=text] {
+  border: none;
+}
+
+.trash-can {
+  border-radius: 80%;
+  border: none;
+  background-color: rgba(128, 200, 102, 1);
+}
+
+.trash-can:hover {
+  background-color: rgb(118, 185, 94);
+}
+
+.add-more-button {
+  width: 80%;
+  border: none;
+  padding: 3px;
+  border-radius: 8px;
+  transition-duration: 0.4s;
+}
+
+.add-more-button:hover {
+  background-color: rgb(243, 191, 184);
+}
+
+.clear-button {
+  border: none;
+  padding: 4px;
+}
+
+.clear-button:hover {
+  color: white;
+  background-color: black;
+}
+
+.setting-button {
+  border: none;
+  padding: 4px;
+}
+
+.setting-button:hover {
+  background-color: rgb(24, 135, 226);
+}
+
+.setting-text:hover {
+  color: white;
+}
+
+.submit-button {
+  border: none;
+  padding: 4px;
+}
+
+.submit-button:hover {
+  background-color: rgb(7, 65, 7);
+}
+
+.submit-text:hover {
+  color: white;
 }

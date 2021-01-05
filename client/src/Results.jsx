@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import axios from 'axios';
+import Chart from './Chart.jsx';
 
 function Results ({ user, cart }) {
 
@@ -64,8 +64,9 @@ function Results ({ user, cart }) {
       {console.log('userProfile', user)}
       {console.log('cart', cart)}
       <button type="button" onClick={handleBackToList} style={close}>
-        <Link to="/">x</Link>
+        <Link to="/" style={closeButton}>x</Link>
       </button>
+      <Chart user={user}/>
       <div>
         Daily calorie limit: {user.calorie}
       </div>
@@ -93,6 +94,10 @@ const close = {
   padding: '3px',
   backgroundColor: 'red',
   float: 'right',
+}
+
+const closeButton = {
+  color: 'white',
 }
 
 

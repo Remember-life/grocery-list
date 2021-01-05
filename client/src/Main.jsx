@@ -116,7 +116,7 @@ function Main () {
             <React.Fragment key={`${inputField}~${index}`}>
               <div className="input-fields" style={fragment}>
                 <div className="item-name">
-                  <label>Item:</label>
+                  <label>Item</label>
                   <input
                     type="text"
                     id="itemName"
@@ -139,22 +139,22 @@ function Main () {
                 </div>
                 <div className="delete-item" style={remove}>
                   {canRemove
-                    ? <button type="button" onClick={() => handleRemoveFields(index)} style={removeButton}>
-                      delete </button>
+                    ? <button type="button" className="trash-can" onClick={() => handleRemoveFields(index)}>
+                      🗑 </button>
                     : null
                   }
                 </div>
               </div>
             </React.Fragment>
           ))}
-        <button type="button" onClick={() => handleAddFields()} style={addMore}>Add more!</button>
+        <button type="button" className="add-more-button" onClick={() => handleAddFields()}>+</button>
         <div className="buttons" style={buttonsContainer}>
-          <button type="button" style={button}>
-            <Link to="/setting">Setting</Link>
+          <button type="button" className="clear-button" onClick={handleClear} >Clear</button>
+          <button type="button" className="setting-button" >
+            <Link to="/setting" className="setting-text">Setting</Link>
           </button>
-          <button type="button" onClick={handleClear} style={button}>Clear</button>
-          <button type="button" onClick={handleSubmit} style={button}>
-            <Link to="/results">Submit</Link>
+          <button type="button" className="submit-button" onClick={handleSubmit} >
+            <Link to="/results" className="submit-text">Submit</Link>
           </button>
         </div>
       </form>
@@ -188,6 +188,7 @@ const fragment = {
   display: 'flex',
   flexDirection: 'row',
   marginBottom: '10px',
+  fontSize: '13px',
 }
 
 const amount = {
@@ -198,18 +199,13 @@ const remove = {
   marginLeft: '10px',
 }
 
-const removeButton = {
-  border: 'none',
-  padding: '4px',
-}
-
-const addMore = {
-  width: '80%',
-  border: 'none',
-  padding: '3px',
-  borderRadius: '8px',
-  cursor: 'pointer',
-}
+// const addMore = {
+//   width: '80%',
+//   border: 'none',
+//   padding: '3px',
+//   borderRadius: '8px',
+//   cursor: 'pointer',
+// }
 
 const buttonsContainer = {
   width: '80%',
@@ -219,11 +215,11 @@ const buttonsContainer = {
   marginTop: '10px',
 }
 
-const button = {
-  border: 'none',
-  padding: '4px',
-  cursor: 'pointer',
-}
+// const button = {
+//   border: 'none',
+//   padding: '4px',
+//   cursor: 'pointer',
+// }
 
 export default Main;
 

@@ -23,7 +23,7 @@ function App () {
 const main = {
   // width: "100vw",
   // height: "100vh",
-  background: "rgba(234, 170, 91, 1)",
+  background: "rgba(128, 200, 102, 1)",
   fontFamily: "Comic Sans MS",
 }
 
