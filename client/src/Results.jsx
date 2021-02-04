@@ -28,9 +28,9 @@ function Results ({ user, cart }) {
   if (increaseFat) { needMore.push('fat') }
 
 
-  const nonMicro = ['calcium', 'fiber', 'iron', 'magnesium', 'potassium', 'sodium', 'vitamin_a', 'vitamin_b6', 'vitamin_b12', 'vitamin_c', 'vitamin_d' ];
-  for (var i = 0; i < nonMicro.length; i++) {
-    var nutrient = nonMicro[i];
+  const nonMacro = ['calcium', 'fiber', 'iron', 'magnesium', 'potassium', 'sodium', 'vitamin_a', 'vitamin_b6', 'vitamin_b12', 'vitamin_c', 'vitamin_d' ];
+  for (var i = 0; i < nonMacro.length; i++) {
+    var nutrient = nonMacro[i];
     if (cart[nutrient] > user[nutrient]) {
       needLess.push(nutrient);
     }
@@ -61,12 +61,12 @@ function Results ({ user, cart }) {
   return (
     <div className="result-container">
       <b>Here is your data:</b>
-      {console.log('userProfile', user)}
-      {console.log('cart', cart)}
+      {/* {console.log('userProfile', user)} */}
+      {/* {console.log('cart', cart)} */}
       <button type="button" onClick={handleBackToList} style={close}>
         <Link to="/" style={closeButton}>x</Link>
       </button>
-      <Chart user={user}/>
+      <Chart user={user} cart={cart}/>
       <div>
         Daily calorie limit: {user.calorie}
       </div>

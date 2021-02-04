@@ -26,7 +26,7 @@ function Main () {
   // pass down the state to results
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('inputFields', inputFields);
+    // console.log('inputFields', inputFields);
 
     // get request with setting info to local database
       // state to store the response data
@@ -116,7 +116,7 @@ function Main () {
             <React.Fragment key={`${inputField}~${index}`}>
               <div className="input-fields" style={fragment}>
                 <div className="item-name">
-                  <label>Item</label>
+                  <label>Item </label>
                   <input
                     type="text"
                     id="itemName"
@@ -127,7 +127,7 @@ function Main () {
                   />
                 </div>
                 <div className="item-amount" style={amount}>
-                  <label>How many?</label>
+                  <label>Amount </label>
                   <input
                     type="text"
                     id="quantity"
