@@ -28,7 +28,7 @@ function findUser (req, res) {
 
   if (gender === 'female') {
     return new Promise((resolve, reject) => {
-      Female.find({ age: age, activity: activity}, function (err, result) {
+      Female.find({ age: age, activity: activity}, '-_id calcium calorie fiber iron lower_carb lower_fat lower_protein magnesium potassium sodium upper_fat upper_protein upper_carb vitamin_a vitamin_b6 vitamin_b12 vitamin_c vitamin_d', function (err, result) {
         if (err) return reject(err);
         result = result[0];
         res.send(result);
@@ -36,7 +36,7 @@ function findUser (req, res) {
     })
   } else {
     return new Promise((resolve, reject) => {
-      Male.find({ age: age, activity: activity}, function (err, result) {
+      Male.find({ age: age, activity: activity}, '-_id calcium calorie fiber iron lower_carb lower_fat lower_protein magnesium potassium sodium upper_fat upper_protein upper_carb vitamin_a vitamin_b6 vitamin_b12 vitamin_c vitamin_d', function (err, result) {
         if (err) return reject(err);
         result = result[0];
         res.send(result);
@@ -85,11 +85,12 @@ async function findData (name) {
 }
 
 function total (data, quantity, days) {
-  // console.log('TOTAL data', data);
+  // console.log('TOTAL data', data[1]);
   // console.log('TOTAL quantity', quantity);
 
   var output = {};
-  var keys = Object.keys(data[0].toObject()).slice(3);
+  var keys = Object.keys(data[1].toObject()).slice(3);
+  // console.log('KEYS', keys);
 
   var value = 0;
   for (var i = 0; i < keys.length; i++) {
@@ -98,7 +99,7 @@ function total (data, quantity, days) {
       if (quantity[j] === 1) {
         value += data[j][nutrient];
       } else {
-        value += (data[j][nutrient]) * quantity[j];
+        value += data[j][nutrient] * quantity[j];
       }
     }
     output[nutrient] = value/days;
