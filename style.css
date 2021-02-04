@@ -30,6 +30,7 @@ a:link {
 
 input[type=text] {
   border: none;
+  padding-left: 8px;
 }
 
 .trash-can {
