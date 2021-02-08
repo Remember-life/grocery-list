@@ -46,7 +46,7 @@ input[type=text] {
 .add-more-button {
   width: 80%;
   border: none;
-  padding: 3px;
+  padding: 10px 12px;
   border-radius: 8px;
   transition-duration: 0.4s;
 }
@@ -57,7 +57,7 @@ input[type=text] {
 
 .clear-button {
   border: none;
-  padding: 4px;
+  padding: 10px 12px;
 }
 
 .clear-button:hover {
@@ -67,7 +67,7 @@ input[type=text] {
 
 .setting-button {
   border: none;
-  padding: 4px;
+  padding: 10px 12px;
 }
 
 .setting-button:hover {
@@ -80,7 +80,7 @@ input[type=text] {
 
 .submit-button {
   border: none;
-  padding: 4px;
+  padding: 10px 12px;
 }
 
 .submit-button:hover {

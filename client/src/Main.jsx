@@ -178,7 +178,7 @@ const form = {
 
 const resultsContainer = {
   // display: 'inline-block',
-  width: '50%',
+  width: '70%',
   marginLeft: "260px",
   marginTop: '30px',
   paddingBottom: '30px',
@@ -208,10 +208,10 @@ const remove = {
 // }
 
 const buttonsContainer = {
-  width: '80%',
+  width: '100%',
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'space-evenly',
+  justifyContent: 'space-between',
   marginTop: '10px',
 }
 
