@@ -126,7 +126,7 @@ function Main () {
                     onChange={event => handleInputChange(index, event)}
                   />
                 </div>
-                <div className="item-amount" style={amount}>
+                <div className="item-amount" style={{marginLeft: '10px'}}>
                   <label>Amount </label>
                   <input
                     type="text"
@@ -137,7 +137,7 @@ function Main () {
                     onChange={event => handleInputChange(index, event)}
                   />
                 </div>
-                <div className="delete-item" style={remove}>
+                <div className="delete-item" style={{marginLeft: '10px'}}>
                   {canRemove
                     ? <button type="button" className="trash-can" onClick={() => handleRemoveFields(index)}>
                       🗑 </button>
@@ -147,11 +147,14 @@ function Main () {
               </div>
             </React.Fragment>
           ))}
-        <button type="button" className="add-more-button" onClick={() => handleAddFields()}>+</button>
         <div className="buttons" style={buttonsContainer}>
+          <button type="button" className="add-more-button" onClick={() => handleAddFields()}>+</button>
           <button type="button" className="clear-button" onClick={handleClear} >Clear</button>
+        </div>
+        <div className="buttons" style={buttonsContainer}>
+
           <button type="button" className="setting-button" >
-            <Link to="/setting" className="setting-text">Setting</Link>
+            <Link to="/setting" className="setting-text">Enter your info!</Link>
           </button>
           <button type="button" className="submit-button" onClick={handleSubmit} >
             <Link to="/results" className="submit-text">Submit</Link>
@@ -177,7 +180,6 @@ const form = {
 }
 
 const resultsContainer = {
-  // display: 'inline-block',
   width: '70%',
   marginLeft: "260px",
   marginTop: '30px',
@@ -191,35 +193,14 @@ const fragment = {
   fontSize: '13px',
 }
 
-const amount = {
-  marginLeft: '10px',
-}
-
-const remove = {
-  marginLeft: '10px',
-}
-
-// const addMore = {
-//   width: '80%',
-//   border: 'none',
-//   padding: '3px',
-//   borderRadius: '8px',
-//   cursor: 'pointer',
-// }
-
 const buttonsContainer = {
   width: '100%',
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'space-between',
+  justifyContent: 'space-evenly',
   marginTop: '10px',
 }
 
-// const button = {
-//   border: 'none',
-//   padding: '4px',
-//   cursor: 'pointer',
-// }
 
 export default Main;
 
