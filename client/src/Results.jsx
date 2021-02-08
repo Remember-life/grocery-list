@@ -63,25 +63,26 @@ function Results ({ user, cart }) {
       {/* {console.log('userProfile', user)} */}
       {/* {console.log('cart', cart)} */}
       <button type="button" onClick={handleBackToList} style={close}>
-        <Link to="/" style={closeButton}>x</Link>
+        <Link to="/" style={{color: 'white'}}>x</Link>
       </button>
       <MacroChart user={user} cart={cart}/>
       <NonMacroChart user={user} cart={cart}/>
       <div style={range}>
         <div style={level}>
-        Daily calorie limit: {user.calorie}
+          Daily calorie limit: {user.calorie}
         </div>
         <div style={level}>
           Calorie calculated from list: {cart.calorie}
         </div>
       </div>
-
       <div style={recomm}>
         <em>{decreaseCalorie ? 'Consider getting rid of items high in sugar or fat!' : increaseCalorie ? 'Consider adding more items to your list!' : 'Your daily calorie is within the range!'}</em>
       </div>
-      <hr />
+      <div style={{paddingBottom: '15px'}}>
+        🍉 🧀 🥓 🍦 🧃 🍎 🌽 🥦 🍋 🍇 🥪 🥭 🧄 🥗 🍞 🥨 🍉 🧀 🥓 🍦 🧃 🍎 🌽 🥦 🍋 🍇 🥪 🥭 🧄 🥗 🍞 🥚 🌰 🥕 🥒 🍣 🍪 🍢 🍤 🍛
+      </div>
       {/* <hr />    instead of a horizontal bar, make a line of grocery items with unicode */}
-      <div style={range}>
+      <div style={threeColumns}>
         <div style={level}>
           Within range!
         </div>
@@ -106,24 +107,28 @@ const close = {
   float: 'right',
 }
 
-const closeButton = {
-  color: 'white',
-}
-
 const recomm = {
   paddingLeft: '220px',
+  paddingTop: '15px',
+  paddingBottom: '15px',
 }
 
 const range = {
   display: 'inline-flex',
   justifyContent: 'space-around',
-  paddingLeft: ' 200px',
+  paddingLeft: '200px',
+}
+
+const threeColumns = {
+  display: 'inline-flex',
+  justifyContent: 'space-around',
+  paddingLeft: '130px',
 }
 
 const level = {
   display: 'inline',
   height: 'fit-content',
-  width: '200px',
+  width: '250px',
 }
 
 export default Results;

@@ -2,51 +2,23 @@ import React from 'react';
 import * as d3 from 'd3';
 
 function NonMacroChart ({ user, cart }) {
-  // console.log('CHART_USER', user);
-  // console.log('CHART_cart', cart);
 
-  // non-macro array of objects (user, cart)
   var highLevelArray = [];
   var lowLevelArray = [];
   var calcium = {}, fiber = {}, iron = {}, magnesium = {}, potassium = {},
   sodium = {}, vitamin_a = {}, vitamin_b6 = {}, vitamin_b12 = {}, vitamin_c = {},
   vitamin_d = {};
 
-  calcium.name = 'calcium';
-  fiber.name = 'fiber';
-  iron.name = 'iron';
-  magnesium.name = 'magnesium';
-  potassium.name = 'potassium';
-  sodium.name = 'sodium';
-  vitamin_a.name = 'vitamin_a';
-  vitamin_b6.name = 'vitamin_b6';
-  vitamin_b12.name = 'vitamin_b12';
-  vitamin_c.name = 'vitamin_c';
-  vitamin_d.name = 'vitamin_d';
+  const strings = ['calcium', 'fiber', 'iron', 'magnesium', 'potassium', 'sodium', 'vitamin_a', 'vitamin_b6', 'vitamin_b12', 'vitamin_c', 'vitamin_d'];
+  const nonMacro = [calcium, fiber, iron, magnesium, potassium, sodium, vitamin_a, vitamin_b6, vitamin_b12, vitamin_c, vitamin_d];
 
-  calcium.user = user.calcium;
-  fiber.user = user.fiber;
-  iron.user = user.iron;
-  magnesium.user = user.magnesium;
-  potassium.user = user.potassium;
-  sodium.user = user.sodium;
-  vitamin_a.user = user.vitamin_a;
-  vitamin_b6.user = user.vitamin_b6;
-  vitamin_b12.user = user.vitamin_b12;
-  vitamin_c.user = user.vitamin_c;
-  vitamin_d.user = user.vitamin_d;
-
-  calcium.cart = cart.calcium;
-  fiber.cart = cart.fiber;
-  iron.cart = cart.iron;
-  magnesium.cart = cart.magnesium;
-  potassium.cart = cart.potassium;
-  sodium.cart = cart.sodium;
-  vitamin_a.cart = cart.vitamin_a;
-  vitamin_b6.cart = cart.vitamin_b6;
-  vitamin_b12.cart = cart.vitamin_b12;
-  vitamin_c.cart = cart.vitamin_c;
-  vitamin_d.cart = cart.vitamin_d;
+  for (var i = 0; i < nonMacro.length; i++) {
+    var nutrient = nonMacro[i];
+    var str = strings[i];
+    nutrient.name = str;
+    nutrient.user = user[str];
+    nutrient.cart = cart[str];
+  }
 
   highLevelArray.push(calcium, magnesium, potassium, sodium, vitamin_a);
   lowLevelArray.push(fiber, iron, vitamin_b6, vitamin_b12, vitamin_c, vitamin_d);
@@ -128,10 +100,6 @@ function NonMacroChart ({ user, cart }) {
   }
 
   return (
-    // <div>
-    //   <div id="high-level"></div>
-    //   <div id="low-level"></div>
-    // </div>
     <div id="non-macro"></div>
 
   )
