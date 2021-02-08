@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Chart from './Chart.jsx';
+import MacroChart from './MacroChart.jsx';
+import NonMacroChart from './NonMacroChart.jsx';
 
 function Results ({ user, cart }) {
 
@@ -8,25 +9,33 @@ function Results ({ user, cart }) {
     e.preventDefault();
   }
 
-  const increaseCalorie = (cart.calorie < user.calorie) && (Math.abs(cart.calorie - user.calorie) > (user.calorie * 0.1));
-  const decreaseCalorie = (cart.calorie > user.calorie) && (Math.abs(cart.calorie - user.calorie) > (user.calorie * 0.1));
-  const decreaseCarb = cart.carb > user.upper_carb;
-  const increaseCarb = cart.carb < user.lower_carb;
-  const decreaseProtein = cart.protein > user.upper_protein;
-  const increaseProtein = cart.protein < user.lower_protein;
-  const decreaseFat = cart.fat > user.upper_fat;
-  const increaseFat = cart.fat < user.lower_fat;
-
   const needMore = [];
   const needLess = [];
+  const withinRange = []; // +/- 10%
 
-  if (decreaseCarb) { needLess.push('carbohydrate') }
-  if (increaseCarb) { needMore.push('carbohydrate') }
-  if (decreaseProtein) { needLess.push('protein') }
-  if (increaseProtein) { needMore.push('protein') }
-  if (decreaseFat) { needLess.push('fat') }
-  if (increaseFat) { needMore.push('fat') }
 
+  const increaseCalorie = (cart.calorie < user.calorie) && (Math.abs(cart.calorie - user.calorie) > (user.calorie * 0.1));
+  const decreaseCalorie = (cart.calorie > user.calorie) && (Math.abs(cart.calorie - user.calorie) > (user.calorie * 0.1));
+
+
+  const macro = ['carb', 'protein', 'fat']
+  const limits = [['upper_carb', 'lower_carb'], ['upper_protein', 'lower_protein'], ['upper_fat', 'lower_fat']];
+  for (var i = 0; i < macro.length; i++) {
+    var group = macro[i];
+    var upper = limits[i][0];
+    var lower = limits[i][1];
+
+    // if cart[name] is greater than lower_name * 0.9  && less than upper_name * 1.10
+      // push name to withinRange
+    if ( user[lower] * 0.9 <= cart[group] <= user[upper] * 1.1 ) {
+      withinRange.push(group)
+    } else if ( cart[group] < user[lower]) {
+      needMore.push(group);
+    } else if (cart[group] > user[upper]) {
+      needLess.push(group);
+    }
+
+  }
 
   const nonMacro = ['calcium', 'fiber', 'iron', 'magnesium', 'potassium', 'sodium', 'vitamin_a', 'vitamin_b6', 'vitamin_b12', 'vitamin_c', 'vitamin_d' ];
   for (var i = 0; i < nonMacro.length; i++) {
@@ -47,16 +56,6 @@ function Results ({ user, cart }) {
     <li key={index}>{nutrient}</li>
   );
 
-  // const macro = ['carb', 'protein', 'fat'];
-  // for (var i = 0; i < macro.length; i++) {
-  //   console.log('for loop ', user.upper_macro[i]);
-  //   // if (cart[macro[i]] > user.upper_macro[i]) {
-  //   //   needLess.push(macro[i])
-  //   // }
-  //   // if (cart[macro[i]] < user.lower_macro[i]) {
-  //   //   needMore.push(macro[i])
-  //   // }
-  // }
 
   return (
     <div className="result-container">
@@ -66,32 +65,43 @@ function Results ({ user, cart }) {
       <button type="button" onClick={handleBackToList} style={close}>
         <Link to="/" style={closeButton}>x</Link>
       </button>
-      <Chart user={user} cart={cart}/>
-      <div>
+      <MacroChart user={user} cart={cart}/>
+      <NonMacroChart user={user} cart={cart}/>
+      <div style={range}>
+        <div style={level}>
         Daily calorie limit: {user.calorie}
+        </div>
+        <div style={level}>
+          Calorie calculated from list: {cart.calorie}
+        </div>
       </div>
-      <div>
-        Calorie calculated from list: {cart.calorie}
-      </div>
-      <div>
+
+      <div style={recomm}>
         <em>{decreaseCalorie ? 'Consider getting rid of items high in sugar or fat!' : increaseCalorie ? 'Consider adding more items to your list!' : 'Your daily calorie is within the range!'}</em>
       </div>
       <hr />
-      <div>
-        You need more of:
-        <ul>{needMore.length === 0 ? 'None!' : listMore}</ul>
+      {/* <hr />    instead of a horizontal bar, make a line of grocery items with unicode */}
+      <div style={range}>
+        <div style={level}>
+          Within range!
+        </div>
+        <div style={level}>
+          You need more of:
+          <ul>{needMore.length === 0 ? 'None!' : listMore}</ul>
+        </div>
+        <div style={level}>
+          You need less of:
+          <ul>{needLess.length === 0 ? 'None!' : listLess}</ul>
+        </div>
       </div>
-      <div>
-        You need less of:
-        <ul>{needLess.length === 0 ? 'None!' : listLess}</ul>
-      </div>
+
     </div>
   )
 }
 
 const close = {
   border: 'none',
-  padding: '3px',
+  padding: '10px',
   backgroundColor: 'red',
   float: 'right',
 }
@@ -100,5 +110,20 @@ const closeButton = {
   color: 'white',
 }
 
+const recomm = {
+  paddingLeft: '220px',
+}
+
+const range = {
+  display: 'inline-flex',
+  justifyContent: 'space-around',
+  paddingLeft: ' 200px',
+}
+
+const level = {
+  display: 'inline',
+  height: 'fit-content',
+  width: '200px',
+}
 
 export default Results;
