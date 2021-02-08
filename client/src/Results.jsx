@@ -25,9 +25,11 @@ function Results ({ user, cart }) {
     var upper = limits[i][0];
     var lower = limits[i][1];
 
+    console.log('cart[group]', cart[group], 'user[lower]', user[lower], 'user[upper]', user[upper]);
+
     // if cart[name] is greater than lower_name * 0.9  && less than upper_name * 1.10
       // push name to withinRange
-    if ( user[lower] * 0.9 <= cart[group] <= user[upper] * 1.1 ) {
+    if ( user[lower] * 0.9 <= cart[group] && cart[group] <= user[upper] * 1.1 ) {
       withinRange.push(group)
     } else if ( cart[group] < user[lower]) {
       needMore.push(group);
@@ -35,6 +37,8 @@ function Results ({ user, cart }) {
       needLess.push(group);
     }
 
+
+    console.log(needMore);
   }
 
   const nonMacro = ['calcium', 'fiber', 'iron', 'magnesium', 'potassium', 'sodium', 'vitamin_a', 'vitamin_b6', 'vitamin_b12', 'vitamin_c', 'vitamin_d' ];
@@ -47,6 +51,11 @@ function Results ({ user, cart }) {
       needMore.push(nutrient);
     }
   }
+
+  console.log('needMore', needMore);
+  const listWithin = withinRange.map((nutrient, index) => {
+    <li key={index}>{nutrient}</li>
+  })
 
   const listMore = needMore.map((nutrient, index) =>
     <li key={index}>{nutrient}</li>
@@ -79,12 +88,13 @@ function Results ({ user, cart }) {
         <em>{decreaseCalorie ? 'Consider getting rid of items high in sugar or fat!' : increaseCalorie ? 'Consider adding more items to your list!' : 'Your daily calorie is within the range!'}</em>
       </div>
       <div style={{paddingBottom: '15px'}}>
-        🍉 🧀 🥓 🍦 🧃 🍎 🌽 🥦 🍋 🍇 🥪 🥭 🧄 🥗 🍞 🥨 🍉 🧀 🥓 🍦 🧃 🍎 🌽 🥦 🍋 🍇 🥪 🥭 🧄 🥗 🍞 🥚 🌰 🥕 🥒 🍣 🍪 🍢 🍤 🍛
+        🍉 🧀 🥓 🍦 🧃 🍎 🌽 🥦 🍋 🍇 🥪 🥭 🧄 🥗 🍞 🥨 🍉 🧀 🥓 🍦 🧃 🍎 🌽 🥦 🍋 🍇 🥪 🥭 🧄 🥗 🍞 🥚 🌰 🥕 🥒 🍣 🍪 🍢 🍤
       </div>
       {/* <hr />    instead of a horizontal bar, make a line of grocery items with unicode */}
       <div style={threeColumns}>
         <div style={level}>
           Within range!
+          <ul>{withinRange.length === 0 ? 'None!' : listWithin}</ul>
         </div>
         <div style={level}>
           You need more of:
