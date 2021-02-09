@@ -11,12 +11,6 @@ function Setting ({settingToMain}) {
   const [activity, setActivity] = useState('');
   const [days, setDays] = useState('');
   const [backdrop, setBackdrop] = useState(true);
-  const [save, setSave] = useState('save');
-
-  const handleBackToList = e => {
-    e.preventDefault();
-    setBackdrop(false);
-  }
 
   const handleAgeChange = e => {
     setAge(e.target.value);
@@ -36,9 +30,8 @@ function Setting ({settingToMain}) {
 
   const handleSettingSubmit = e => {
     e.preventDefault();
-    // console.log('SETTING submit', age, gender, activity);
+    setBackdrop(false);
     settingToMain(age, gender, activity, days);
-    setSave('saved!');
   }
 
   return (
@@ -48,9 +41,6 @@ function Setting ({settingToMain}) {
       </div>
       <div className="Modal">
         <b>SETTING:</b>
-        <button type="button" onClick={handleBackToList} style={close}>
-          <Link to="/" style={x}>x</Link>
-        </button>
         <hr />
         <form onSubmit={handleSettingSubmit} style={form}>
           <label>
@@ -78,7 +68,9 @@ function Setting ({settingToMain}) {
             For how many days?
             <input type="text" value={days} size="3" onChange={event => handleDaysChange(event)} style={inputField}/>
           </label>
-          <input type="submit" value={save} style={saveButton}/>
+          <button type="button" onClick={handleSettingSubmit} style={saveButton}>
+          <Link to="/">Save</Link>
+          </button>
         </form>
       </div>
     </>
