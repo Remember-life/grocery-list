@@ -18,68 +18,87 @@ function Main () {
   const [user, setUser] = useState('');
   const [inputTotal, setInputTotal] = useState('');
 
+  const data = {calcium: 0, calorie: 0, carb: 0, fat: 0, fiber: 0, iron: 0, magnesium: 0,
+  potassium: 0, protein: 0, sodium: 0, vitamin_a: 0, vitamin_b6: 0, vitamin_b12: 0,
+  vitamin_c: 0, vitamin_d: 0};
+
+  async function completeLoop(input) {
+    console.log('1');
+
+    const parser = await axios.get('https://api.edamam.com/api/food-database/v2/parser', {
+      params: {
+        ingr: input.item,
+        app_id: '9e938d8c',
+        app_key: '511a3b25e3893606edde9ff3c0cce2fa'
+      }
+    });
+    // return response.data.parsed[0].food.foodId;
+    console.log('2');
+    var json = {
+      "ingredients": [
+          {
+              "quantity": Number(input.quantity),
+              "measureURI" : "http://www.edamam.com/ontologies/edamam.owl#Measure_unit",
+              "foodId": parser.data.parsed[0].food.foodId
+          }
+      ]
+    };
+    console.log('3');
+    const nutrients = await axios.post(
+      'https://api.edamam.com/api/food-database/v2/nutrients?app_id=9e938d8c&app_key=511a3b25e3893606edde9ff3c0cce2fa',
+      json, {
+        headers: {
+          "Content-Type": "application/json",
+        }
+    });
+
+    console.log('4');
+    var edamamData = nutrients.data.totalNutrients;
+
+    // var names = Object.keys(data);
+    // var edamamNames = ['CA', 'ENERC_KCAL', 'CHOCDF', 'FAT', 'FIBTG', 'FE', 'MG', 'K', 'PROCNT',
+    // 'NA', 'VITA_RAE', 'VITB6A', 'VITB12', 'VITC', 'VICD'];
+    // for (var i = 0; i < names.length; i++) {
+    //   data.names[i] += edamamData.edamamNames[i].quantity;
+    // }
+
+    data.calcium += edamamData.CA.quantity;
+    data.calorie += edamamData.ENERC_KCAL.quantity;
+    data.carb += edamamData.CHOCDF.quantity;
+    data.fat += edamamData.FAT.quantity;
+    data.fiber += edamamData.FIBTG.quantity;
+    data.iron += edamamData.FE.quantity;
+    data.magnesium += edamamData.MG.quantity;
+    data.potassium += edamamData.K.quantity;
+    data.protein += edamamData.PROCNT.quantity;
+    data.sodium += edamamData.NA.quantity;
+    data.vitamin_a += edamamData.VITA_RAE.quantity;
+    data.vitamin_b6 += edamamData.VITB6A.quantity;
+    data.vitamin_b12 += edamamData.VITB12.quantity;
+    data.vitamin_c += edamamData.VITC.quantity;
+    data.vitamin_d += edamamData.VITD.quantity;
+    console.log('5');
+
+    return data;
+
+  }
+
+  async function getData() {
+    // const data = {calcium: 0, calorie: 0, carb: 0, fat: 0, fiber: 0, iron: 0, magnesium: 0, potassium: 0, protein: 0, sodium: 0, vitamin_a: 0, vitamin_b6: 0, vitamin_b12: 0, vitamin_c: 0, vitamin_d: 0};
+    console.log('start');
+    for (const input of inputFields) {
+      const response = await completeLoop(input);
+      console.log(response);
+    }
+    console.log('6: loop complete??', data);
+    setInputTotal(data);
+  }
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    getData();
 
-    const data = {calcium: 0, calorie: 0, carb: 0, fat: 0, fiber: 0, iron: 0, magnesium: 0, potassium: 0, protein: 0, sodium: 0, vitamin_a: 0, vitamin_b6: 0, vitamin_b12: 0, vitamin_c: 0, vitamin_d: 0};
-
-      inputFields.forEach(input => {
-        axios.get('https://api.edamam.com/api/food-database/v2/parser', {
-          params: {
-            ingr: input.item,
-            app_id: '9e938d8c',
-            app_key: '511a3b25e3893606edde9ff3c0cce2fa'
-          }
-        })
-        .then(function (response) {
-          var id = response.data.parsed[0].food.foodId;
-          var json = {
-            "ingredients": [
-                {
-                    "quantity": Number(input.quantity),
-                    "measureURI" : "http://www.edamam.com/ontologies/edamam.owl#Measure_unit",
-                    "foodId": id
-                }
-            ]
-          };
-          axios.post('https://api.edamam.com/api/food-database/v2/nutrients?app_id=9e938d8c&app_key=511a3b25e3893606edde9ff3c0cce2fa',
-          json, {
-            headers: {
-              "Content-Type": "application/json",
-            }
-          })
-          .then(function (response) {
-            // console.log('nutrients response - ', response.data.totalNutrients);
-
-            var edamamData = response.data.totalNutrients;
-            // var names = Object.keys(data);
-            data.calcium += edamamData.CA.quantity;
-            data.calorie += edamamData.ENERC_KCAL.quantity;
-            data.carb += edamamData.CHOCDF.quantity;
-            data.fat += edamamData.FAT.quantity;
-            data.fiber += edamamData.FIBTG.quantity;
-            data.iron += edamamData.FE.quantity;
-            data.magnesium += edamamData.MG.quantity;
-            data.potassium += edamamData.K.quantity;
-            data.protein += edamamData.PROCNT.quantity;
-            data.sodium += edamamData.NA.quantity;
-            data.vitamin_a += edamamData.VITA_RAE.quantity;
-            data.vitamin_b6 += edamamData.VITB6A.quantity;
-            data.vitamin_b12 += edamamData.VITB12.quantity;
-            data.vitamin_c += edamamData.VITC.quantity;
-            data.vitamin_d += edamamData.VITD.quantity;
-
-            console.log('data before dividing by # days', data);
-            setInputTotal(data);
-          })
-          .catch(function (error) {
-            console.log('Error in getting nutrients response - ', error.response);
-          })
-        })
-        .catch(function (error) {
-          console.log('Error in getting parser response - ', error.response);
-        })
-      })
 
     // axios.get('/items', {
     //   params: {
