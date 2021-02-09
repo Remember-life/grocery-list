@@ -91,7 +91,7 @@ body.dark-theme .trash-can:hover {
   border: none;
   padding: 8px 10px;
   border-radius: 8px;
-  transition-duration: 0.4s;
+  /* transition-duration: 0.2s; */
 }
 
 .add-more-button:hover {
