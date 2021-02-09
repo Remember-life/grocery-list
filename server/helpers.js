@@ -1,6 +1,8 @@
 const mongo = require('mongodb');
 const mongoose = require('mongoose');
 const { Item, Female, Male } = require('../database/index.js');
+const nodemailer = require('nodemailer');
+const {user, pass} = require('../email.config.js');
 
 function findUser (req, res) {
   // const queryStr = ``;
@@ -105,13 +107,39 @@ function total (data, quantity, days) {
     output[nutrient] = value/days;
     value = 0;
   }
-  // console.log('total object', output);
 
   return output;
 }
 
+function sendEmail (req, res) {
+
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: user,
+      pass: pass
+    }
+  });
+
+  var mailOptions = {
+    from: user,
+    to: req.body.address, //string
+    subject: 'Your grocery list is here!',
+    text: JSON.stringify(req.body.items) //string
+  }
+
+  transporter.sendMail(mailOptions, function(error, info) {
+    if (error) {
+      console.log('NodeMailer Error - ' + error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  })
+
+}
 
 module.exports = {
   findUser,
   findItems,
+  sendEmail,
 }

@@ -182,3 +182,34 @@ body.dark-theme .submit-button {
 body.dark-theme .submit-button:hover {
   background-color: rgb(11, 90, 11);
 }
+
+.email-form {
+  display: flex;
+  padding: 5px 7px;
+  background-color: rgb(128, 200, 102);
+}
+
+body.dark-theme .email-form {
+  background-color: rgb(28, 31, 26);
+}
+
+.email-button {
+  display: flex;
+  padding-top: 5px;
+  border: none;
+}
+
+.email-button:hover {
+  background-color: rgb(245, 245, 175);
+}
+
+body.dark-theme .email-button {
+  background-color: rgb(28, 31, 26);
+  border: 1px solid lightgrey;
+  color: lightgrey;
+}
+
+body.dark-theme .email-button:hover {
+  background-color: rgb(245, 245, 129);
+  color: grey;
+}

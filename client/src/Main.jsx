@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Results from './Results.jsx';
 import Setting from './Setting.jsx';
+import SendEmail from './SendEmail.jsx';
 import '../../style.css';
 import axios from 'axios';
 
@@ -145,13 +146,14 @@ function Main () {
         <div className="buttons" style={buttonsContainer}>
 
           <button type="button" className="setting-button" >
-            <Link to="/setting" className="setting-text">Enter your info!</Link>
+            <Link to="/setting" className="setting-text">Enter your info</Link>
           </button>
           <button type="button" className="submit-button" onClick={handleSubmit} >
             <Link to="/results" className="submit-text">Submit</Link>
           </button>
         </div>
       </form>
+      <SendEmail items={inputFields}/>
       <div className="results-container" style={resultsContainer}>
         <Route path="/results"><Results user={user} cart={inputTotal}/></Route>
       </div>
