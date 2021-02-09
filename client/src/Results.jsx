@@ -9,14 +9,27 @@ function Results ({ user, cart }) {
     e.preventDefault();
   }
 
+  const backToTop = () => {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+
+  const mybutton = document.getElementById('top');
+  window.onscroll = function () {scrollFunction()};
+  const scrollFunction = () => {
+    if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+
   const needMore = [];
   const needLess = [];
   const withinRange = []; // +/- 10%
 
-
   const increaseCalorie = (cart.calorie < user.calorie) && (Math.abs(cart.calorie - user.calorie) > (user.calorie * 0.1));
   const decreaseCalorie = (cart.calorie > user.calorie) && (Math.abs(cart.calorie - user.calorie) > (user.calorie * 0.1));
-
 
   const macro = ['carb', 'protein', 'fat']
   const limits = [['upper_carb', 'lower_carb'], ['upper_protein', 'lower_protein'], ['upper_fat', 'lower_fat']];
@@ -24,8 +37,6 @@ function Results ({ user, cart }) {
     var group = macro[i];
     var upper = limits[i][0];
     var lower = limits[i][1];
-
-    console.log('cart[group]', cart[group], 'user[lower]', user[lower], 'user[upper]', user[upper]);
 
     // if cart[name] is greater than lower_name * 0.9  && less than upper_name * 1.10
       // push name to withinRange
@@ -37,8 +48,6 @@ function Results ({ user, cart }) {
       needLess.push(group);
     }
 
-
-    console.log(needMore);
   }
 
   const nonMacro = ['calcium', 'fiber', 'iron', 'magnesium', 'potassium', 'sodium', 'vitamin_a', 'vitamin_b6', 'vitamin_b12', 'vitamin_c', 'vitamin_d' ];
@@ -52,25 +61,21 @@ function Results ({ user, cart }) {
     }
   }
 
-  console.log('needMore', needMore);
   const listWithin = withinRange.map((nutrient, index) => {
     <li key={index}>{nutrient}</li>
   })
-
   const listMore = needMore.map((nutrient, index) =>
     <li key={index}>{nutrient}</li>
   );
-
   const listLess = needLess.map((nutrient, index) =>
     <li key={index}>{nutrient}</li>
   );
 
 
+
   return (
     <div className="result-container">
       <b>Here is your data:</b>
-      {/* {console.log('userProfile', user)} */}
-      {/* {console.log('cart', cart)} */}
       <button type="button" onClick={handleBackToList} style={close}>
         <Link to="/" style={{color: 'white'}}>x</Link>
       </button>
@@ -105,7 +110,7 @@ function Results ({ user, cart }) {
           <ul>{needLess.length === 0 ? 'None!' : listLess}</ul>
         </div>
       </div>
-
+      <button id="top" type="button" onClick={backToTop} style={top}>Top</button>
     </div>
   )
 }
@@ -139,6 +144,19 @@ const level = {
   display: 'inline',
   height: 'fit-content',
   width: '250px',
+}
+
+const top = {
+  display: 'none',
+  position: 'fixed',
+  bottom: '50px',
+  right: '150px',
+  border: 'none',
+  backgroundColor: 'red',
+  color: 'white',
+  cursor: 'pointer',
+  padding: '10px',
+  borderRadius: '5px',
 }
 
 export default Results;
