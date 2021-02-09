@@ -5,24 +5,6 @@ const nodemailer = require('nodemailer');
 const {user, pass} = require('../email.config.js');
 
 function findUser (req, res) {
-  // const queryStr = ``;
-  // return new Promise((resolve, reject) => {
-  //   connection.query(queryStr, (err, result) => {
-  //     if (err) return reject(err);
-  //     return resolve(result);
-  //   })
-  // })
-
-  /**
-   function findUser(req, res) {
-     usersModel.findUser(req.params.id)
-      .then((results) => res.send(results))
-      .catch((err) => {
-        res.status(404)
-        res.send(err)
-      })
-   }
-   */
 
   const age = req.query.age;
   const gender = req.query.gender;
