@@ -13,11 +13,7 @@ function Main () {
     { item: '', quantity: '' }
   ]);
 
-  const [age, setAge] = useState('');
-  const [gender, setGender] = useState('');
-  const [activity, setActivity] = useState('');
   const [days, setDays] = useState('');
-
   const [user, setUser] = useState('');
   const [inputTotal, setInputTotal] = useState('');
 
@@ -26,35 +22,21 @@ function Main () {
   // pass down the state to results
   const handleSubmit = e => {
     e.preventDefault();
-    // console.log('inputFields', inputFields);
 
     // get request with setting info to local database
       // state to store the response data
         // pass down the state to results page
-    axios.all([
-      axios.get('/user', {
-        params: {
-          age: age,
-          gender: gender,
-          activity: activity,
-        }
-      }),
-      axios.get('/items', {
-        params: {
-          input: inputFields,
-          days: days,
-        }
-      })
-    ])
-    .then(axios.spread((user, cart) => {
-      // console.log('main RESPONSE', user.data);
-      setUser(user.data);
-
-      // console.log('main Cart response:', cart.data);
+    axios.get('/items', {
+      params: {
+        input: inputFields,
+        days: days,
+      }
+    })
+    .then(function (cart) {
       setInputTotal(cart.data);
-    }))
+    })
     .catch(function(error) {
-      console.log('main ERROR', error);
+      console.log('ERROR - ', error);
     })
 
     // get request with inputfields values into external database
@@ -98,13 +80,22 @@ function Main () {
 
   // from submit in setting
   const handleSettingSubmit = (age, gender, activity, days) => {
-    // change state
-    // console.log('main BEFORE', age, gender, activity)
-    setAge(age);
-    setGender(gender);
-    setActivity(activity);
+
     setDays(days);
-    // console.log('main AFTER', age, gender, activity);
+
+    axios.get('/user', {
+      params: {
+        age: age,
+        gender: gender,
+        activity: activity,
+      }
+    })
+    .then(function (user) {
+      setUser(user.data);
+    })
+    .catch(function (error) {
+      console.log('ERROR - ', error);ß
+    })
   }
 
   const canRemove = inputFields.length > 1;
