@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Results from './Results.jsx';
 import Setting from './Setting.jsx';
 import SendEmail from './SendEmail.jsx';
+import Buttons from './Buttons.jsx';
 import '../../style.css';
 import axios from 'axios';
 
@@ -212,15 +213,7 @@ function Main () {
           <button type="button" className="add-more-button" onClick={() => handleAddFields()}>+</button>
           <button type="button" className="clear-button" onClick={handleClear} >Clear</button>
         </div>
-        <div className="buttons" style={buttonsContainer}>
-
-          <button type="button" className="setting-button" >
-            <Link to="/setting" className="setting-text">Enter your info</Link>
-          </button>
-          <button type="button" className="submit-button" onClick={handleSubmit} >
-            <Link to="/results" className="submit-text">Submit</Link>
-          </button>
-        </div>
+        <Buttons handleSubmit={handleSubmit}/>
       </form>
       <SendEmail items={inputFields}/>
       <div className="results-container" style={resultsContainer}>
