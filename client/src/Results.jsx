@@ -111,6 +111,9 @@ function Results ({ user, cart }) {
         </div>
       </div>
       <button id="top" type="button" onClick={backToTop} style={top}>Top</button>
+      <button type="button">
+        <Link to="/">Back to List</Link>
+      </button>
     </div>
   )
 }

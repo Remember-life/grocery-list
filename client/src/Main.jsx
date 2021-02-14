@@ -7,7 +7,7 @@ import Buttons from './Buttons.jsx';
 import '../../style.css';
 import axios from 'axios';
 
-function Main () {
+function Main ({handleList, handleRecommended}) {
 
   const [inputFields, setInputFields] = useState([
     { item: '', quantity: '' },
@@ -16,8 +16,10 @@ function Main () {
   ]);
 
   const [days, setDays] = useState('');
-  const [user, setUser] = useState('');
-  const [inputTotal, setInputTotal] = useState('');
+  // const [user, setUser] = useState('');
+  // const [inputTotal, setInputTotal] = useState('');
+
+  const [openModal, setOpenModal] = useState(false);
 
   const data = {calcium: 0, calorie: 0, carb: 0, fat: 0, fiber: 0, iron: 0, magnesium: 0,
   potassium: 0, protein: 0, sodium: 0, vitamin_a: 0, vitamin_b6: 0, vitamin_b12: 0,
@@ -92,7 +94,8 @@ function Main () {
       console.log(response);
     }
     console.log('6: loop complete??', data);
-    setInputTotal(data);
+    // setInputTotal(data);
+    handleList(data);
   }
 
 
@@ -153,7 +156,7 @@ function Main () {
   const handleSettingSubmit = (age, gender, activity, days) => {
 
     setDays(days);
-
+    setOpenModal(false);
     axios.get('/user', {
       params: {
         age: age,
@@ -162,11 +165,17 @@ function Main () {
       }
     })
     .then(function (user) {
-      setUser(user.data);
+      // setUser(user.data);
+      handleRecommended(user.data);
     })
     .catch(function (error) {
       console.log('ERROR - ', error);ß
     })
+  }
+
+  const openSettingModal = () => {
+    setOpenModal(true);
+    console.log(openModal);
   }
 
   const canRemove = inputFields.length > 1;
@@ -213,15 +222,19 @@ function Main () {
           <button type="button" className="add-more-button" onClick={() => handleAddFields()}>+</button>
           <button type="button" className="clear-button" onClick={handleClear} >Clear</button>
         </div>
-        <Buttons handleSubmit={handleSubmit}/>
+        <Buttons handleSubmit={handleSubmit} openSettingModal={openSettingModal}/>
       </form>
       <SendEmail items={inputFields}/>
-      <div className="results-container" style={resultsContainer}>
-        <Route path="/results"><Results user={user} cart={inputTotal}/></Route>
-      </div>
-      <div className="setting-container">
+
+
+      {/* <Results user={user} cart={inputTotal}/> */}
+      {/* <div className="setting-container">
         <Route path="/setting"><Setting settingToMain={handleSettingSubmit}/></Route>
-      </div>
+      </div> */}
+      { openModal
+        ? <Setting settingToMain={handleSettingSubmit} />
+        : null
+      }
     </>
   )
 
