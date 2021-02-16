@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { useHistory, BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Results from './Results.jsx';
 import Setting from './Setting.jsx';
 import SendEmail from './SendEmail.jsx';
@@ -8,9 +8,16 @@ import axios from 'axios';
 
 function ManualOrReceipt ({ current, handleOption }) {
 
-  const handleOptionChange = (e) => {
+  const history = useHistory();
 
+  const handleOptionChange = (e) => {
     handleOption(e.target.value);
+
+    if (e.target.value === 'manual') {
+      history.push('/')
+    } else {
+      history.push('/receipt')
+    }
   }
 
   return (
@@ -19,7 +26,6 @@ function ManualOrReceipt ({ current, handleOption }) {
         <input
           type="radio"
           value="manual"
-          // name="option"
           checked={current === 'manual'}
           onChange={e => handleOptionChange(e)}
         />
@@ -27,7 +33,6 @@ function ManualOrReceipt ({ current, handleOption }) {
         <input
           type="radio"
           value="receipt"
-          // name="option"
           checked={current === 'receipt'}
           onChange={e => handleOptionChange(e)}
         />

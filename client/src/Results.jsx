@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { useHistory, BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import MacroChart from './MacroChart.jsx';
 import NonMacroChart from './NonMacroChart.jsx';
+import '../../style.css';
 
 function Results ({ user, cart }) {
+
+  const history = useHistory();
 
   const handleBackToList = e => {
     e.preventDefault();
@@ -14,13 +17,15 @@ function Results ({ user, cart }) {
     document.documentElement.scrollTop = 0;
   }
 
-  const mybutton = document.getElementById('top');
-  window.onscroll = function () {scrollFunction()};
-  const scrollFunction = () => {
+
+  const myButton = document.getElementById('top');
+  window.onscroll = function () {scrollFunction(myButton)};
+
+  const scrollFunction = (el) => {
     if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
-      mybutton.style.display = "block";
+      el.style.display = "block";
     } else {
-      mybutton.style.display = "none";
+      el.style.display = "none";
     }
   }
 
@@ -76,9 +81,6 @@ function Results ({ user, cart }) {
   return (
     <div className="result-container">
       <b>Here is your data:</b>
-      <button type="button" onClick={handleBackToList} style={close}>
-        <Link to="/" style={{color: 'white'}}>x</Link>
-      </button>
       <MacroChart user={user} cart={cart}/>
       <NonMacroChart user={user} cart={cart}/>
       <div style={range}>
@@ -95,7 +97,6 @@ function Results ({ user, cart }) {
       <div style={{paddingBottom: '15px'}}>
         🍉 🧀 🥓 🍦 🧃 🍎 🌽 🥦 🍋 🍇 🥪 🥭 🧄 🥗 🍞 🥨 🍉 🧀 🥓 🍦 🧃 🍎 🌽 🥦 🍋 🍇 🥪 🥭 🧄 🥗 🍞 🥚 🌰 🥕 🥒 🍣 🍪 🍢 🍤
       </div>
-      {/* <hr />    instead of a horizontal bar, make a line of grocery items with unicode */}
       <div style={threeColumns}>
         <div style={level}>
           Within range!
@@ -111,9 +112,9 @@ function Results ({ user, cart }) {
         </div>
       </div>
       <button id="top" type="button" onClick={backToTop} style={top}>Top</button>
-      <button type="button">
-        <Link to="/">Back to List</Link>
-      </button>
+      <button id="back" className="back-to-list" type="button"
+        onClick={() => history.push('/')}
+      >Back to List</button>
     </div>
   )
 }

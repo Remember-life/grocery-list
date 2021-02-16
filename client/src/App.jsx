@@ -40,12 +40,9 @@ function App () {
       />
       <h1 style={header}>Grocery List</h1>
       <div style={carrot}>🥕🥬🍓</div>
-      {/* { currOption === 'manual'
-          ? <Main />
-          : <Receipt />
-      } */}
       <Switch>
         <Route exact path="/"><Main handleList={handleList} handleRecommended={handleRecommended} /></Route>
+        <Route path="/receipt"><Receipt /></Route>
         <Route path="/results"><Results user={recomm} cart={list}/></Route>
       </Switch>
     </div>
