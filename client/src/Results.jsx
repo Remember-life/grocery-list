@@ -122,7 +122,7 @@ function Results ({ user, cart }) {
 const resultContainer = {
 
   paddingTop: '80px',
-  paddingLeft: '250px',
+  paddingLeft: '200px',
 
 
 }

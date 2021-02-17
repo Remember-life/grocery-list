@@ -61,7 +61,7 @@ function App () {
 const header = {
   position: 'absolute',
   top: '40px',
-  left: '500px',
+  left: '400px',
   fontSize: '180%',
   fontWeight: 'bold',
 };

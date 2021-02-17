@@ -163,8 +163,8 @@ function Main ({handleList, handleRecommended}) {
 const form = {
   fontFamily: 'Comic Sans MS',
   display: 'inline-block',
-  marginLeft: "500px",
-  paddingTop: "110px",
+  marginLeft: '400px',
+  paddingTop: '110px',
   paddingBottom: "100px",
 }
 
