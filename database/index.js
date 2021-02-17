@@ -12,28 +12,12 @@ db.once('open', function() {
   console.log('SUCCESSFUL CONNECTION');
 })
 
-const itemSchema = new mongoose.Schema({
-  name: String,
-  category: {
-    type: String,
-    enum: ['fruit', 'veggie', 'grain', 'protein', 'dairy'],
-  },
-  calorie: Number,
-  carb: Number,
-  protein: Number,
-  fat: Number,
-  sodium: Number,
-  potassium: Number,
-  fiber: Number,
-  vitamin_a: Number,
-  vitamin_c: Number,
-  calcium: Number,
-  iron: Number,
-  vitamin_d: Number,
-  vitamin_b6: Number,
-  vitamin_b12: Number,
-  magnesium: Number
-});
+const userSchema = new mongoose.Schema({
+  username: String,
+  email: String,
+  password: String,
+  saved_list: Object
+})
 
 const femaleSchema = new mongoose.Schema({
   age: Number,
@@ -81,13 +65,13 @@ const maleSchema = new mongoose.Schema({
   magnesium: Number
 })
 
-const Item = mongoose.model('Item', itemSchema);
+const User = mongoose.model('User', userSchema);
 const Female = mongoose.model('Female', femaleSchema);
 const Male = mongoose.model('Male', maleSchema);
 
 module.exports = {
   db,
-  Item,
+  User,
   Female,
   Male
 }
