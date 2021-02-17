@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Results from './Results.jsx';
 import Setting from './Setting.jsx';
 import SendEmail from './SendEmail.jsx';
 import Buttons from './Buttons.jsx';
@@ -15,17 +14,24 @@ function Main ({handleList, handleRecommended}) {
     { item: '', quantity: '' }
   ]);
 
+  useEffect(() => {
+    const sessionData = JSON.parse(window.sessionStorage.getItem("inputfields"));
+
+    if (sessionData) {
+      setInputFields(sessionData);
+    }
+  }, [])
+
   const [days, setDays] = useState('');
   // const [user, setUser] = useState('');
   // const [inputTotal, setInputTotal] = useState('');
 
   const [openModal, setOpenModal] = useState(false);
 
-  const data = {calcium: 0, calorie: 0, carb: 0, fat: 0, fiber: 0, iron: 0, magnesium: 0,
-  potassium: 0, protein: 0, sodium: 0, vitamin_a: 0, vitamin_b6: 0, vitamin_b12: 0,
-  vitamin_c: 0, vitamin_d: 0};
+  const data = {calcium: 0, calorie: 0, carb: 0, fat: 0, fiber: 0, iron: 0, magnesium: 0, potassium: 0, protein: 0, sodium: 0, vitamin_a: 0, vitamin_b6: 0, vitamin_b12: 0, vitamin_c: 0, vitamin_d: 0};
 
   async function completeLoop(input) {
+
     console.log('1');
 
     const parser = await axios.get('https://api.edamam.com/api/food-database/v2/parser', {
@@ -35,7 +41,7 @@ function Main ({handleList, handleRecommended}) {
         app_key: '511a3b25e3893606edde9ff3c0cce2fa'
       }
     });
-    // return response.data.parsed[0].food.foodId;
+
     console.log('2');
     var json = {
       "ingredients": [
@@ -58,28 +64,14 @@ function Main ({handleList, handleRecommended}) {
     console.log('4');
     var edamamData = nutrients.data.totalNutrients;
 
-    // var names = Object.keys(data);
-    // var edamamNames = ['CA', 'ENERC_KCAL', 'CHOCDF', 'FAT', 'FIBTG', 'FE', 'MG', 'K', 'PROCNT',
-    // 'NA', 'VITA_RAE', 'VITB6A', 'VITB12', 'VITC', 'VICD'];
-    // for (var i = 0; i < names.length; i++) {
-    //   data.names[i] += edamamData.edamamNames[i].quantity;
-    // }
+    var names = ['calcium', 'calorie', 'carb', 'fat', 'fiber', 'iron', 'magnesium', 'potassium', 'protein', 'sodium', 'vitamin_a', 'vitamin_b6', 'vitamin_b12', 'vitamin_c', 'vitamin_d'];
+    var edamamNames = ['CA', 'ENERC_KCAL', 'CHOCDF', 'FAT', 'FIBTG', 'FE', 'MG', 'K', 'PROCNT',
+    'NA', 'VITA_RAE', 'VITB6A', 'VITB12', 'VITC', 'VITD'];
 
-    data.calcium += edamamData.CA.quantity;
-    data.calorie += edamamData.ENERC_KCAL.quantity;
-    data.carb += edamamData.CHOCDF.quantity;
-    data.fat += edamamData.FAT.quantity;
-    data.fiber += edamamData.FIBTG.quantity;
-    data.iron += edamamData.FE.quantity;
-    data.magnesium += edamamData.MG.quantity;
-    data.potassium += edamamData.K.quantity;
-    data.protein += edamamData.PROCNT.quantity;
-    data.sodium += edamamData.NA.quantity;
-    data.vitamin_a += edamamData.VITA_RAE.quantity;
-    data.vitamin_b6 += edamamData.VITB6A.quantity;
-    data.vitamin_b12 += edamamData.VITB12.quantity;
-    data.vitamin_c += edamamData.VITC.quantity;
-    data.vitamin_d += edamamData.VITD.quantity;
+    for (var i = 0; i < names.length; i++) {
+      data[names[i]] += edamamData[edamamNames[i]].quantity;
+    }
+
     console.log('5');
 
     return data;
@@ -87,11 +79,13 @@ function Main ({handleList, handleRecommended}) {
   }
 
   async function getData() {
-    // const data = {calcium: 0, calorie: 0, carb: 0, fat: 0, fiber: 0, iron: 0, magnesium: 0, potassium: 0, protein: 0, sodium: 0, vitamin_a: 0, vitamin_b6: 0, vitamin_b12: 0, vitamin_c: 0, vitamin_d: 0};
+
     console.log('start');
+
     for (const input of inputFields) {
-      const response = await completeLoop(input);
-      console.log(response);
+      if (input.item !== '') {
+        const response = await completeLoop(input);
+      }
     }
     console.log('6: loop complete??', data);
     // setInputTotal(data);
@@ -103,19 +97,7 @@ function Main ({handleList, handleRecommended}) {
     e.preventDefault();
     getData();
 
-
-    // axios.get('/items', {
-    //   params: {
-    //     input: inputFields,
-    //     days: days,
-    //   }
-    // })
-    // .then(function (cart) {
-    //   setInputTotal(cart.data);
-    // })
-    // .catch(function(error) {
-    //   console.log('ERROR - ', error);
-    // })
+    window.sessionStorage.setItem("inputfields", JSON.stringify(inputFields));
   }
 
   const handleInputChange = (index, event) => {
@@ -142,9 +124,6 @@ function Main ({handleList, handleRecommended}) {
   }
 
   const handleClear = (e) => {
-    // Array.from(document.querySelectorAll('input')).forEach(
-    //   input => (input.value = '')
-    // );
     setInputFields([
       { item: '', quantity: '' },
       { item: '', quantity: '' },
@@ -157,6 +136,7 @@ function Main ({handleList, handleRecommended}) {
 
     setDays(days);
     setOpenModal(false);
+
     axios.get('/user', {
       params: {
         age: age,
@@ -169,13 +149,13 @@ function Main ({handleList, handleRecommended}) {
       handleRecommended(user.data);
     })
     .catch(function (error) {
-      console.log('ERROR - ', error);ß
+      console.log('ERROR - ', error);
     })
+
   }
 
   const openSettingModal = () => {
     setOpenModal(true);
-    console.log(openModal);
   }
 
   const canRemove = inputFields.length > 1;
@@ -225,12 +205,6 @@ function Main ({handleList, handleRecommended}) {
         <Buttons handleSubmit={handleSubmit} openSettingModal={openSettingModal}/>
       </form>
       <SendEmail items={inputFields}/>
-
-
-      {/* <Results user={user} cart={inputTotal}/> */}
-      {/* <div className="setting-container">
-        <Route path="/setting"><Setting settingToMain={handleSettingSubmit}/></Route>
-      </div> */}
       { openModal
         ? <Setting settingToMain={handleSettingSubmit} />
         : null
@@ -243,15 +217,9 @@ function Main ({handleList, handleRecommended}) {
 const form = {
   fontFamily: 'Comic Sans MS',
   display: 'inline-block',
-  marginLeft: "50px",
-  paddingTop: "70px",
-}
-
-const resultsContainer = {
-  width: '70%',
-  marginLeft: "260px",
-  marginTop: '30px',
-  paddingBottom: '30px',
+  marginLeft: "500px",
+  paddingTop: "110px",
+  paddingBottom: "100px",
 }
 
 const fragment = {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import '../../style.css';
 import Main from './Main.jsx';
@@ -14,6 +14,14 @@ function App () {
   const [recomm, setRecomm] = useState('');
   const [list, setList] = useState('');
 
+  useEffect(() => {
+    const sessionData = JSON.parse(window.sessionStorage.getItem("recomm"));
+
+    if (sessionData) {
+      setRecomm(sessionData);
+    }
+  }, [])
+
   const handleDarkMode = () => {
     document.body.classList.toggle('dark-theme');
   }
@@ -28,8 +36,9 @@ function App () {
 
   const handleRecommended = (data) => {
     setRecomm(data);
-  }
 
+    window.sessionStorage.setItem("recomm", JSON.stringify(data));
+  }
 
   return (
     <div id="main">
@@ -38,8 +47,7 @@ function App () {
         current={currOption}
         handleOption={handleRadioOption}
       />
-      <h1 style={header}>Grocery List</h1>
-      <div style={carrot}>🥕🥬🍓</div>
+      <div style={header}> 🍓🥬🥕 Grocery List 🥕🥬🍓 </div>
       <Switch>
         <Route exact path="/"><Main handleList={handleList} handleRecommended={handleRecommended} /></Route>
         <Route path="/receipt"><Receipt /></Route>
@@ -51,47 +59,11 @@ function App () {
 }
 
 const header = {
-  flex: "95%",
-  display: "inline-block",
-  paddingLeft: "260px",
-  fontSize: "180%",
-}
-
-const carrot = {
-  flex: "5%",
-  display: "inline-block",
-}
-
-
-
-/////
-const form = {
-  fontFamily: 'Comic Sans MS',
-  display: 'inline-block',
-  marginLeft: "50px",
-  paddingTop: "70px",
-}
-
-const resultsContainer = {
-  width: '70%',
-  marginLeft: "260px",
-  marginTop: '30px',
-  paddingBottom: '30px',
-}
-
-const fragment = {
-  display: 'flex',
-  flexDirection: 'row',
-  marginBottom: '10px',
-  fontSize: '13px',
-}
-
-const buttonsContainer = {
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-evenly',
-  marginTop: '10px',
+  position: 'absolute',
+  top: '40px',
+  left: '500px',
+  fontSize: '180%',
+  fontWeight: 'bold',
 }
 
 
