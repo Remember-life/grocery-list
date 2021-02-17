@@ -24,21 +24,21 @@ function App () {
 
   const handleDarkMode = () => {
     document.body.classList.toggle('dark-theme');
-  }
+  };
 
   const handleRadioOption = (input) => {
     setCurrOption(currOption => input)
-  }
+  };
 
   const handleList = (data) => {
     setList(data);
-  }
+  };
 
   const handleRecommended = (data) => {
     setRecomm(data);
 
     window.sessionStorage.setItem("recomm", JSON.stringify(data));
-  }
+  };
 
   return (
     <div id="main">
@@ -64,7 +64,7 @@ const header = {
   left: '500px',
   fontSize: '180%',
   fontWeight: 'bold',
-}
+};
 
 
 export default App;

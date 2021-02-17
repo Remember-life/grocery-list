@@ -28,74 +28,20 @@ function Main ({handleList, handleRecommended}) {
 
   const [openModal, setOpenModal] = useState(false);
 
-  const data = {calcium: 0, calorie: 0, carb: 0, fat: 0, fiber: 0, iron: 0, magnesium: 0, potassium: 0, protein: 0, sodium: 0, vitamin_a: 0, vitamin_b6: 0, vitamin_b12: 0, vitamin_c: 0, vitamin_d: 0};
-
-  async function completeLoop(input) {
-
-    console.log('1');
-
-    const parser = await axios.get('https://api.edamam.com/api/food-database/v2/parser', {
-      params: {
-        ingr: input.item,
-        app_id: '9e938d8c',
-        app_key: '511a3b25e3893606edde9ff3c0cce2fa'
-      }
-    });
-
-    console.log('2');
-    var json = {
-      "ingredients": [
-          {
-              "quantity": Number(input.quantity),
-              "measureURI" : "http://www.edamam.com/ontologies/edamam.owl#Measure_unit",
-              "foodId": parser.data.parsed[0].food.foodId
-          }
-      ]
-    };
-    console.log('3');
-    const nutrients = await axios.post(
-      'https://api.edamam.com/api/food-database/v2/nutrients?app_id=9e938d8c&app_key=511a3b25e3893606edde9ff3c0cce2fa',
-      json, {
-        headers: {
-          "Content-Type": "application/json",
-        }
-    });
-
-    console.log('4');
-    var edamamData = nutrients.data.totalNutrients;
-
-    var names = ['calcium', 'calorie', 'carb', 'fat', 'fiber', 'iron', 'magnesium', 'potassium', 'protein', 'sodium', 'vitamin_a', 'vitamin_b6', 'vitamin_b12', 'vitamin_c', 'vitamin_d'];
-    var edamamNames = ['CA', 'ENERC_KCAL', 'CHOCDF', 'FAT', 'FIBTG', 'FE', 'MG', 'K', 'PROCNT',
-    'NA', 'VITA_RAE', 'VITB6A', 'VITB12', 'VITC', 'VITD'];
-
-    for (var i = 0; i < names.length; i++) {
-      data[names[i]] += edamamData[edamamNames[i]].quantity;
-    }
-
-    console.log('5');
-
-    return data;
-
-  }
-
-  async function getData() {
-
-    console.log('start');
-
-    for (const input of inputFields) {
-      if (input.item !== '') {
-        const response = await completeLoop(input);
-      }
-    }
-    console.log('6: loop complete??', data);
-    // setInputTotal(data);
-    handleList(data);
-  }
-
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    getData();
+
+    axios.get('/edamam', {
+      params: {
+        inputFields: inputFields,
+      }
+    })
+    .then(function (response) {
+      handleList(response.data);
+    })
+    .catch(function (error) {
+      console.log('Error in getting data from Edamam - ', error);
+    })
 
     window.sessionStorage.setItem("inputfields", JSON.stringify(inputFields));
   }

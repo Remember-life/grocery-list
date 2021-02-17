@@ -1,8 +1,9 @@
+const axios = require('axios');
 const mongo = require('mongodb');
 const mongoose = require('mongoose');
 const { Item, Female, Male } = require('../database/index.js');
 const nodemailer = require('nodemailer');
-const {user, pass} = require('../email.config.js');
+const {user, pass, app_id, app_key} = require('../auth.config.js');
 
 function findUser (req, res) {
 
@@ -30,67 +31,59 @@ function findUser (req, res) {
 
 }
 
-async function findItems (req, res) {
-  // console.log('REQ.QUERY', req.query);
-  const items = req.query.input;
-  const days = req.query.days;
-  const nutrients = [];
-  const quantity = [];
 
-  for (var i = 0; i < items.length; i++) {
-    const parsed = JSON.parse(items[i]);
-    var name = parsed.item;
-    var item_quantity = parsed.quantity;
-    quantity.push(item_quantity);
+async function requestEdamam(input) {
 
-    const result = await findData(name);
-    nutrients.push(result);
-  }
-
-  // console.log('findData nutrients ', nutrients);
-  // console.log('findData quantity ', quantity);
-
-  const cart = total(nutrients, quantity, days);
-
-  res.send(cart);
-}
-
-async function findData (name) {
-  var output;
-  await Item.find({ name: name }, function (err, result) {
-    if (err) {
-      console.log('findItems ERROR: ', err);
-    } else {
-      // console.log('Item.find result: ', result[0]);
-      output = result[0];
+  const parser = await axios.get('https://api.edamam.com/api/food-database/v2/parser', {
+    params: {
+      ingr: input.item,
+      app_id: app_id,
+      app_key: app_key
     }
-  })
-  return output;
+  });
+
+  var json = {
+    "ingredients": [
+        {
+            "quantity": Number(input.quantity),
+            "measureURI" : "http://www.edamam.com/ontologies/edamam.owl#Measure_unit",
+            "foodId": parser.data.parsed[0].food.foodId
+        }
+    ]
+  };
+
+  const nutrients = await axios.post(
+    'https://api.edamam.com/api/food-database/v2/nutrients?app_id=9e938d8c&app_key=511a3b25e3893606edde9ff3c0cce2fa',
+    json, {
+      headers: {
+        "Content-Type": "application/json",
+      }
+  });
+
+  return nutrients.data.totalNutrients;
 }
 
-function total (data, quantity, days) {
-  // console.log('TOTAL data', data[1]);
-  // console.log('TOTAL quantity', quantity);
+async function getData (req, res) {
+  const data = {calcium: 0, calorie: 0, carb: 0, fat: 0, fiber: 0, iron: 0, magnesium: 0, potassium: 0, protein: 0, sodium: 0, vitamin_a: 0, vitamin_b6: 0, vitamin_b12: 0, vitamin_c: 0, vitamin_d: 0};
 
-  var output = {};
-  var keys = Object.keys(data[1].toObject()).slice(3);
-  // console.log('KEYS', keys);
+  var names = ['calcium', 'calorie', 'carb', 'fat', 'fiber', 'iron', 'magnesium', 'potassium', 'protein', 'sodium', 'vitamin_a', 'vitamin_b6', 'vitamin_b12', 'vitamin_c', 'vitamin_d'];
+  var edamamNames = ['CA', 'ENERC_KCAL', 'CHOCDF', 'FAT', 'FIBTG', 'FE', 'MG', 'K', 'PROCNT',
+  'NA', 'VITA_RAE', 'VITB6A', 'VITB12', 'VITC', 'VITD'];
 
-  var value = 0;
-  for (var i = 0; i < keys.length; i++) {
-    var nutrient = keys[i];
-     for (var j = 0; j < data.length; j++) {
-      if (quantity[j] === 1) {
-        value += data[j][nutrient];
-      } else {
-        value += data[j][nutrient] * quantity[j];
+  var inputFields = req.query.inputFields;
+
+  for (const input of inputFields) {
+    var obj = JSON.parse(input);
+
+    if (obj.item !== '') {
+      const edamamData = await requestEdamam(obj);
+      for (var i = 0; i < names.length; i++) {
+        data[names[i]] += edamamData[edamamNames[i]].quantity;
       }
     }
-    output[nutrient] = value/days;
-    value = 0;
   }
 
-  return output;
+  res.send(data);
 }
 
 function sendEmail (req, res) {
@@ -122,6 +115,6 @@ function sendEmail (req, res) {
 
 module.exports = {
   findUser,
-  findItems,
+  getData,
   sendEmail,
 }
