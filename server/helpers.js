@@ -3,7 +3,7 @@ const mongo = require('mongodb');
 const mongoose = require('mongoose');
 const { Item, Female, Male } = require('../database/index.js');
 const nodemailer = require('nodemailer');
-const {user, pass, app_id, app_key} = require('../auth.config.js');
+const {user, pass, app_id, app_key} = require('../config.js');
 
 function findUser (req, res) {
 
