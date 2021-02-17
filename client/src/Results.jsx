@@ -79,15 +79,15 @@ function Results ({ user, cart }) {
 
 
   return (
-    <div className="result-container">
-      <b>Here is your data:</b>
+    <div className="result-container" style={resultContainer}>
+      <div style={{fontWeight: 'bold', fontSize:'130%'}}>Here is your data:</div>
       <MacroChart user={user} cart={cart}/>
       <NonMacroChart user={user} cart={cart}/>
       <div style={range}>
-        <div style={level}>
-          Daily calorie limit: {user.calorie}
+        <div style={calorie}>
+          Daily calorie limit:{user.calorie}
         </div>
-        <div style={level}>
+        <div style={calorie}>
           Calorie calculated from list: {cart.calorie}
         </div>
       </div>
@@ -119,6 +119,14 @@ function Results ({ user, cart }) {
   )
 }
 
+const resultContainer = {
+
+  paddingTop: '80px',
+  paddingLeft: '250px',
+
+
+}
+
 const close = {
   border: 'none',
   padding: '10px',
@@ -126,10 +134,18 @@ const close = {
   float: 'right',
 }
 
+const calorie = {
+  display: 'inline',
+  height: 'fit-content',
+  width: '300px',
+}
+
 const recomm = {
   paddingLeft: '220px',
   paddingTop: '15px',
   paddingBottom: '15px',
+  width: '60%',
+  backgroundColor: 'rgb(241, 200, 109)',
 }
 
 const range = {

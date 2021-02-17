@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import '../../style.css';
 
 function Buttons ({handleSubmit, openSettingModal}) {
-  console.log(openSettingModal);
+  // console.log(openSettingModal);
 
   const handleUserInfoSubmit = (e) => {
     e.preventDefault;
