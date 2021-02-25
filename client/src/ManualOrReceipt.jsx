@@ -3,7 +3,6 @@ import { useHistory, BrowserRouter as Router, Switch, Route, Link } from 'react-
 import Results from './Results.jsx';
 import Setting from './Setting.jsx';
 import SendEmail from './SendEmail.jsx';
-import '../../style.css';
 import axios from 'axios';
 
 function ManualOrReceipt ({ current, handleOption }) {

@@ -4,7 +4,7 @@ import Results from './Results.jsx';
 import Setting from './Setting.jsx';
 import SendEmail from './SendEmail.jsx';
 import Buttons from './Buttons.jsx';
-import '../../style.css';
+// import '../../style.css';
 import axios from 'axios';
 
 function Receipt () {
