@@ -2,7 +2,8 @@ const mongo = require('mongodb');
 const mongoose = require('mongoose');
 const uri = 'mongodb://localhost/grocery';
 
-mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true,
+useFindAndModify: false});
 
 const db = mongoose.connection;
 db.on('error', function() {
@@ -16,7 +17,14 @@ const userSchema = new mongoose.Schema({
   username: String,
   email: String,
   password: String,
-  saved_list: Object
+  saved_list: {
+    type: Array,
+    default: [
+      { item: '', quantity: '' },
+      { item: '', quantity: '' },
+      { item: '', quantity: '' }
+    ]
+  }
 })
 
 const femaleSchema = new mongoose.Schema({
