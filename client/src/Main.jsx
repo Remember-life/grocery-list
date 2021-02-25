@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Setting from './Setting.jsx';
 import SendEmail from './SendEmail.jsx';
 import Buttons from './Buttons.jsx';
-import '../../style.css';
+// import '../../style.css';
 import axios from 'axios';
 
 function Main ({handleList, handleRecommended}) {
@@ -148,11 +148,11 @@ function Main ({handleList, handleRecommended}) {
           <button type="button" className="add-more-button" onClick={() => handleAddFields()}>+</button>
           <button type="button" className="clear-button" onClick={handleClear} >Clear</button>
         </div>
-        <Buttons handleSubmit={handleSubmit} openSettingModal={openSettingModal}/>
+        <Buttons handleSubmit={handleSubmit} openSettingModal={openSettingModal} from="main"/>
       </form>
       <SendEmail items={inputFields}/>
       { openModal
-        ? <Setting settingToMain={handleSettingSubmit} />
+        ? <Setting settingToMain={handleSettingSubmit} from="main"/>
         : null
       }
     </>

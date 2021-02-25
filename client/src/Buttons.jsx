@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import '../../style.css';
+import { useHistory, BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-function Buttons ({handleSubmit, openSettingModal}) {
+function Buttons ({handleSubmit, openSettingModal, from}) {
   // console.log(openSettingModal);
+  const history = useHistory();
 
   const handleUserInfoSubmit = (e) => {
     e.preventDefault;
@@ -19,8 +19,13 @@ function Buttons ({handleSubmit, openSettingModal}) {
         {/* <Link to="/setting" className="setting-text">Enter your info</Link> */}
         Enter your info
       </button>
-      <button type="button" className="submit-button" onClick={handleSubmit} >
-        <Link to="/results" className="submit-text">Submit</Link>
+      <button type="button" className="submit-button" onClick={(e) => handleSubmit(e)} >
+        <Link to={{
+          pathname: "/results",
+          from: from
+        }}
+        className="submit-text"
+        >Submit</Link>
       </button>
     </div>
   )
