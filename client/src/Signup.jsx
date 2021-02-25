@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory, BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import axios from 'axios';
-import '../../style.css';
+// import '../../style.css';
 import Backdrop from './Backdrop.jsx';
 
 function Signup () {
@@ -26,7 +26,19 @@ function Signup () {
 
   const handleSignupSubmit = e => {
     e.preventDefault;
-
+    axios.post('/register', {
+      params: {
+        username: username,
+        email: email,
+        password: password,
+      }
+    })
+    .then(function (response) {
+      console.log('User is registered - ', response);
+    })
+    .catch(function (error) {
+      console.log('Error in registering the user - ', error);
+    })
   }
 
   return (
@@ -65,7 +77,7 @@ function Signup () {
           onClick={handleSignupSubmit}
           style={signupButtons}
         >
-          Sign up
+          <Link to='/login'>Sign up</Link>
         </button>
         <button
           type="button"

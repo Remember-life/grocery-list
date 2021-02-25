@@ -2,9 +2,14 @@ import React, { useState } from 'react';
 import { useHistory, BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import MacroChart from './MacroChart.jsx';
 import NonMacroChart from './NonMacroChart.jsx';
-import '../../style.css';
+// import '../../style.css';
 
-function Results ({ user, cart }) {
+function Results (props) {
+  console.log('RESULTS');
+  const from = props.location.from;
+  const user = props.user;
+  const cart = props.cart;
+  const username = props.username;
 
   const history = useHistory();
 
@@ -76,7 +81,7 @@ function Results ({ user, cart }) {
     <li key={index}>{nutrient}</li>
   );
 
-
+  const toMain = from === "main";
 
   return (
     <div className="result-container" style={resultContainer}>
@@ -112,9 +117,20 @@ function Results ({ user, cart }) {
         </div>
       </div>
       <button id="top" type="button" onClick={backToTop} style={top}>Top</button>
-      <button id="back" className="back-to-list" type="button"
+      {/* <button id="back" className="back-to-list" type="button"
         onClick={() => history.push('/')}
-      >Back to List</button>
+      >Back to List</button> */}
+      { toMain
+        ? <button id="back"
+          className="back-to-list" type="button"
+          onClick={() => history.push('/')}
+          >Back to List</button>
+        : <button id="back"
+          className="back-to-list" type="button"
+          onClick={() => history.push(`/${username}`)}
+          >Back to List</button>
+      }
+
     </div>
   )
 }

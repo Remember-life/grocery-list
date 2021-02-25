@@ -3,7 +3,7 @@ const mongo = require('mongodb');
 const mongoose = require('mongoose');
 const { Female, Male } = require('../database/index.js');
 const nodemailer = require('nodemailer');
-const {user, pass, app_id, app_key} = require('../config.js');
+const {user, pass, app_id, app_key} = require('../keys.config.js');
 
 function findUser (req, res) {
 
@@ -112,6 +112,7 @@ function sendEmail (req, res) {
   })
 
 }
+
 
 module.exports = {
   findUser,

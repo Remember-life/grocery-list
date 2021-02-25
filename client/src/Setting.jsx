@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import axios from 'axios';
-import  '../../style.css';
+// import  '../../style.css';
 import Backdrop from './Backdrop.jsx';
 
-function Setting ({settingToMain}) {
+function Setting ({settingToMain, from}) {
 
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
@@ -33,6 +33,7 @@ function Setting ({settingToMain}) {
     setBackdrop(false);
     settingToMain(age, gender, activity, days);
   }
+  const guest = from === "main";
 
   return (
     <>
@@ -68,9 +69,17 @@ function Setting ({settingToMain}) {
             For how many days?
             <input type="text" value={days} size="3" onChange={event => handleDaysChange(event)} style={inputField}/>
           </label>
-          <button type="button" onClick={handleSettingSubmit} style={saveButton}>
-          <Link to="/">Save</Link>
-          </button>
+          { guest
+            ? <button type="button" onClick=
+                {handleSettingSubmit} style={saveButton}>
+              <Link to="/">Save</Link>
+              </button>
+            : <button type="button" onClick=
+                {handleSettingSubmit} style={saveButton}>
+              <Link to={`/${from}`}>Save</Link>
+              </button>
+          }
+
         </form>
       </div>
     </>

@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
 import { useHistory, BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import axios from 'axios';
-import '../../style.css';
 import Backdrop from './Backdrop.jsx';
 
-function Login () {
+function Login ({ handleLoginStatus, handleSavedList }) {
   const history = useHistory();
 
   const [backdrop, setBackDrop] = useState(true);
-  const [email, setEmail] = useState('');
+
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
 
   const handleUsernameChange = e => {
     setUsername(e.target.value);
-  }
-
-  const handleEmailChange = e => {
-    setEmail(e.target.value);
   }
 
   const handlePasswordChange = e => {
@@ -26,6 +22,34 @@ function Login () {
   const handleLoginSubmit = e => {
     e.preventDefault;
 
+    axios.get('/login', {
+      params: {
+        username: username,
+        password: password,
+      }
+    })
+    .then(function (response) {
+      console.log('User is logged in');
+      handleLoginStatus(username);
+      if (response.data.saved_list) {
+        handleSavedList(response.data.saved_list);
+      }
+      // history.push({
+      //   pathname: `/${username}`,
+      //   data: response.data
+      // })
+    })
+    .then(function () {
+      history.push(`/${username}`);
+    })
+    .catch(function (error) {
+      console.log('Error in logging in the user - ', error);
+      if (error.response.status === 404) {
+        window.alert('No user found. Check your login info and try again.');
+      } else if (error.response.status === 500) {
+        window.alert('Internal server error. Try logging in later.')
+      }
+    })
   }
 
   return (
@@ -37,11 +61,11 @@ function Login () {
         <b>Login</b>
         <hr />
         <form style={form}>
-          <label>email address:</label>
+          <label>username:</label>
           <input
             type="text"
-            value={email}
-            onChange={e => handleEmailChange(e)}
+            value={username}
+            onChange={e => handleUsernameChange(e)}
             style={input}
           />
           <label>password:</label>
@@ -57,6 +81,7 @@ function Login () {
           onClick={handleLoginSubmit}
           style={loginButtons}
         >
+          {/* <Link to={`/${username}`}>Log in</Link> */}
           Log in
         </button>
         <button
