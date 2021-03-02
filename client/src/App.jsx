@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams, BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import axios from 'axios';
 import Main from './Main.jsx';
 import Receipt from './Receipt.jsx';
 import Results from './Results.jsx';
@@ -60,7 +61,17 @@ function App () {
     setUsername('Guest');
     // clear all the inputFields
     window.sessionStorage.clear();
-    // invalidate the token?
+    // invalidate the token
+      // if httpOnly parameter is set to false
+      // document.cookie = 'jwt=; Path=/; max-age=0';
+      // console.log(document.cookie);
+    axios.get('/logout')
+    .then(function (response) {
+      console.log('User is logged out')
+    })
+    .catch(function (error) {
+      console.log('Error in logging out the user - ', error);
+    })
 
     history.push('/');
   }

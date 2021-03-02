@@ -4,17 +4,17 @@ const mongoose = require('mongoose');
 const { User } = require('../database/index.js');
 const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 const bcrypt = require('bcryptjs'); // encryption for password including salt
-require('dotenv').config(); //process.env.ACCESS_TOKEN
+require('dotenv').config(); //process.env.privateKey
 
 // middleware to authenticate a token
-function authenticateToken(req, res, next) {
+function verifyToken(req, res, next) {
   var token = req.cookies.jwt;
 
   if (!token) {
     return res.status(403).send(); // 403 = Forbidden; server understood the request but refuses to authorize it
   }
 
-  jwt.verify(token, process.env.ACCESS_TOKEN, function(err, decoded) {
+  jwt.verify(token, process.env.privateKey, function(err, decoded) {
     //decoded = original payload
     if (err) {
       return res.status(401).send() //token has expired or is invalid
@@ -27,7 +27,7 @@ function authenticateToken(req, res, next) {
 // username = {username: 'username'}
 // {username: req.body.params.username}
 function generateToken(username) {
-  return jwt.sign(username, process.env.ACCESS_TOKEN, {expiresIn: '1800s'}); //30min
+  return jwt.sign(username, process.env.privateKey,  {expiresIn: '1800s'}); //30min
 }
 
 // register new user
@@ -72,12 +72,8 @@ async function loginUser (req, res) {
     var newToken = generateToken({username: user.username});
     // add token in cookie
     res.cookie('jwt', newToken, { httpOnly: true });
-    // send user's list if any has been saved
-    // if(user.saved_list) {
-    //   res.status(200).send(user.saved_list);
-    // } else {
-    //   res.status(200).send('Success in logging in');
-    // }
+    // res.cookie('jwt', newToken);
+
     res.status(200).send(user);
 
   })
@@ -104,9 +100,16 @@ function save (req, res) {
 
 }
 
+function invalidateToken (req, res) {
+  res.cookie('jwt', 'logged-out', {maxAge: 0, httpOnly: true})
+
+  res.status(200).send('Success in logging out user');
+}
+
 module.exports = {
-  authenticateToken,
+  verifyToken,
   registerUser,
   loginUser,
-  save
+  save,
+  invalidateToken,
 }
